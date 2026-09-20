@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignItems: 'right',
     color: '#2a5050',
+    marginBottom: '10',
   },
 
   input: {
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 150,
     borderRadius: 10,
     paddingRight: 140,
+    marginTop: '25',
 },
 
   buttonText: {
