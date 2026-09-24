@@ -29,7 +29,7 @@ export default function HomeScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('START')}
+        onPress={() => navigation.navigate('Start')}
       >
         <Text style={styles.buttonText}>
           START

@@ -10,9 +10,35 @@ import {
 
 import { Picker } from '@react-native-picker/picker';
 
-export default function logInScreen({ navigation }) {
+export default function EnterTask({ route, navigation }) {
 
+  const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
+  const [description, setDescription] = useState('');
+  const [activityType, setActivityType] = useState('');
+  const [deadline, setDeadline] = useState('');
+
+  // Get previous tasks
+  const existingTasks = route.params?.tasks || [];
+
+  const saveTask = () => {
+
+    const newTask = {
+      id: Date.now().toString(),
+      title,
+      subject,
+      activityType,
+      description,
+      deadline,
+    };
+
+    // Add new task to previous tasks
+    const updatedTasks = [...existingTasks, newTask];
+
+    navigation.navigate('Confirm Task', {
+      tasks: updatedTasks,
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -20,18 +46,18 @@ export default function logInScreen({ navigation }) {
       <Text style={styles.title}>NEW TASK</Text>
 
       <Text style={styles.badis}>
-        ______________________________________________________
+        __________________________________________
       </Text>
 
-      {/* TITLE */}
       <Text style={styles.text}>Title</Text>
 
       <TextInput
         style={styles.input}
         placeholder="Title of your Activity:"
+        value={title}
+        onChangeText={setTitle}
       />
 
-      {/* SUBJECT */}
       <Text style={styles.text}>Subject</Text>
 
       <View style={styles.pickerContainer}>
@@ -39,63 +65,50 @@ export default function logInScreen({ navigation }) {
           selectedValue={subject}
           onValueChange={(itemValue) => setSubject(itemValue)}
         >
-          <Picker.Item
-            label="Select Subject"
-            value=""
-          />
-
-          <Picker.Item
-            label="JavaScript"
-            value="JavaScript"
-          />
-
-          <Picker.Item
-            label="PHP"
-            value="PHP"
-          />
-
-          <Picker.Item
-            label="Python"
-            value="Python"
-          />
-
-          <Picker.Item
-            label="Java"
-            value="Java"
-          />
-
-          <Picker.Item
-            label="Information Management"
-            value="Information Management"
-          />
+          <Picker.Item label="Mobile Programming" value="Mobile Programming" />
+          <Picker.Item label="Programming Language" value="Programming Language" />
+          <Picker.Item label="Software Engineering" value="Software Engineering" />
+          <Picker.Item label="Automata Theory" value="Automata Theory" />
+          <Picker.Item label="Reading Visual Art" value="Reading Visual Art" />
         </Picker>
       </View>
 
-      {/* DESCRIPTION */}
+      <Text style={styles.text}>Activity Type</Text>
+
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={activityType}
+          onValueChange={(itemValue) => setActivityType(itemValue)}
+        >
+          <Picker.Item label="Task" value="Task" />
+          <Picker.Item label="Assignment" value="Assignment" />
+        </Picker>
+      </View>
+
       <Text style={styles.text}>Description</Text>
 
       <TextInput
         style={styles.input}
         placeholder="Short Description:"
+        value={description}
+        onChangeText={setDescription}
       />
 
-      {/* DEADLINE */}
       <Text style={styles.text}>Deadline</Text>
 
       <TextInput
         style={styles.input}
         placeholder="YYYY-MM-DD"
         keyboardType="numeric"
+        value={deadline}
+        onChangeText={setDeadline}
       />
 
-      {/* SAVE BUTTON */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('LOG IN')}
+        onPress={saveTask}
       >
-        <Text style={styles.buttonText}>
-          SAVE TASK
-        </Text>
+        <Text style={styles.buttonText}>Done</Text>
       </TouchableOpacity>
 
     </View>
@@ -109,7 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    paddingTop: 25,
+    paddingTop: 10,
     paddingLeft: 15,
   },
 
@@ -126,44 +139,45 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#2a5050',
-    marginBottom: 10,
+    marginBottom: 5,
   },
 
   input: {
     width: 300,
-    height: 50,
+    height: 40,
     borderWidth: 1,
     borderColor: '#377979',
     padding: 10,
     borderRadius: 8,
-    marginBottom: 30,
+    marginBottom: 10,
   },
 
   pickerContainer: {
     width: 300,
-    height: 50,
     borderWidth: 1,
     borderColor: '#377979',
     borderRadius: 8,
-    marginBottom: 30,
+    marginBottom: 10,
     backgroundColor: '#fff',
-    justifyContent: 'center',
+    overflow: 'hidden',
   },
 
   button: {
     backgroundColor: '#377979',
     paddingVertical: 12,
-    paddingHorizontal: 120,
+    alignItems: 'center',
+    width: 300,
     borderRadius: 10,
-    marginTop: 5,
+    marginTop: 10,
   },
 
   buttonText: {
     color: '#f6fafa',
     fontWeight: 'bold',
+    fontSize: 16,
   },
 
 });
