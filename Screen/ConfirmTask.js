@@ -1,90 +1,62 @@
-import React from 'react';
-import MenuBar from './MenuBar';
-
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 
-export default function ConfirmTask({ route, navigation }) {
-
-  const { tasks = [] } = route.params || {};
+export default function ConfirmTask({ navigation }) {
 
   return (
     <View style={styles.container}>
-      
-
+    
       <View style={styles.taskBox}>
 
         <Text style={styles.title}>Confirm Tasks</Text>
 
         <View style={styles.line} />
 
-        <ScrollView
-          style={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}
-        >
-
-          {tasks.map((item, index) => (
-
-            <View
-              key={item.id || index}
-              style={styles.infoBox}
-            >
-
               <Text style={styles.taskTitle}>
-                Title: {item.title}
+                Title: First Mobile App
               </Text>
 
               <Text style={styles.subject}>
-                Subject: {item.subject}
+                Subject: Mobile Programming
               </Text>
 
               <Text style={styles.subject}>
-                Activity Type: {item.activityType}
+                Activity Type: MCO 1
               </Text>
 
               <Text style={styles.description}>
-                Description: {item.description}
+                Description: Create a Static Mobile App  
               </Text>
 
               <Text style={styles.deadline}>
-                Deadline: {item.deadline}
+                Deadline: September 30, 2026
               </Text>
 
-            </View>
-
-          ))}
-
-        </ScrollView>
-
         <TouchableOpacity
-          style={styles.saveButton}
-          onPress={() =>
-            navigation.navigate('My Tasks', {
-              tasks: tasks,
-            })
-          }
+        style={styles.saveButton}
+        onPress={() => navigation.navigate('My Tasks')}
         >
-          <Text style={styles.saveButtonText}>
-            SAVE TASKS
-          </Text>
+
+        <Text style={styles.saveButtonText}>
+          SAVE TASKS
+        </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={() => navigation.goBack()}
+        style={styles.cancelButton}
+        onPress={() => navigation.goBack()}
         >
-          <Text style={styles.cancelButtonText}>
-            CANCEL
-          </Text>
+
+        <Text style={styles.cancelButtonText}>
+          CANCEL
+        </Text>
         </TouchableOpacity>
 
       </View>
-
     </View>
   );
 }
@@ -119,21 +91,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 15,
   },
-  scrollContainer: {
-    marginBottom: 15,
-  },
-  infoBox: {
-    width: '100%',
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#2c4c76',
-    borderRadius: 15,
-    padding: 15,
-    marginBottom: 12,
-  },
+
+ 
   taskTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#0B1F3A',
     marginBottom: 5,
   },
@@ -157,6 +118,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
+    marginTop: '10',
     marginBottom: 10,
   },
   saveButtonText: {

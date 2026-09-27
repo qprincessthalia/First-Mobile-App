@@ -1,77 +1,47 @@
-import React from 'react';
-
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+} from 'react-native'; 
 
-export default function MyTask({ route, navigation }) {
-  const { tasks = [] } = route.params || {};
+export default function MyTask({ navigation }) {
 
   return (
     <View style={styles.container}>
 
       <Text style={styles.title}>MY TASKS</Text>
-
       <View style={styles.line} />
 
-      {tasks.length > 0 && (
-        <ScrollView
-          style={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          {tasks.map((item, index) => (
-            <View
-              key={item.id || index}
-              style={styles.taskBox}
-            >
-              <Text style={styles.taskTitle}>
-                Title: {item.title}
-              </Text>
+        <View style={styles.taskBox}>
+          <Text style={styles.taskTitle}>Title: First Mobile App</Text>
+          <Text style={styles.subject}>Subject: Mobile Programming</Text>
+          <Text style={styles.activityType}>Activity Type: MCO1</Text>
+          <Text style={styles.description}>Description: Create a Static Mobile App </Text>
+          <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
+        </View>
 
-              <Text style={styles.subject}>
-                Subject: {item.subject}
-              </Text>
+        <View style={styles.taskBox}>
+          <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
+          <Text style={styles.subject}>Subject: Mobile Programming</Text>
+          <Text style={styles.activityType}>Activity Type: MCO2</Text>
+          <Text style={styles.description}>Description: Create a Dynamic Mobile App </Text>
+          <Text style={styles.deadline}>Deadline:   December 5, 2026</Text>
+        </View>
 
-              <Text style={styles.activityType}>
-                Activity Type: {item.activityType}
-              </Text>
-
-              <Text style={styles.description}>
-                Description: {item.description}
-              </Text>
-
-              <Text style={styles.deadline}>
-                Deadline: {item.deadline}
-              </Text>
-            </View>
-          ))}
-        </ScrollView>
-      )}
 
       <View style={styles.buttonRow}>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate('Enter Task', {
-              tasks: tasks,
-            })
-          }
+          onPress={() => navigation.navigate('Enter Task')}
         >
           <Text style={styles.buttonText}>ADD TASK</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate('Sorted Activity', {
-              tasks: tasks,
-            })
-          }
+          onPress={() => navigation.navigate('Sorted Activity')}
         >
           <Text style={styles.buttonText}>SORT ACTIVITY</Text>
         </TouchableOpacity>
@@ -83,89 +53,82 @@ export default function MyTask({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+
   container: {
+    flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    paddingTop: 20,
+    padding: 15,
   },
 
   title: {
-    fontSize: 24,
+    fontSize: 25,
     fontWeight: 'bold',
-    color: '#0B1F3A',
+    color: '#008080',
   },
 
   line: {
-    width: '85%',
-    height: 1,
-    backgroundColor: '#D5DCE5',
-    marginTop: 10,
-    marginBottom: 10,
+    height: 2,
+    backgroundColor: '#2a5050',
+    marginVertical: 15,
   },
 
-  scrollContainer: {
-    width: '85%',
-    maxHeight: 350,
+  taskContainer: {
+    flex: 1,
   },
 
   taskBox: {
-    width: '100%',
-    backgroundColor: '#F5F7FA',
+    width: '95%',
+    padding: 15,
     borderWidth: 2,
     borderColor: '#377979',
     borderRadius: 15,
-    padding: 15,
-    marginBottom: 10,
+    marginBottom: 15,
+    backgroundColor: '#F5F7FA',
   },
 
   taskTitle: {
     fontSize: 18,
-    color: '#0B1F3A',
-    marginBottom: 5,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
 
   subject: {
-    fontSize: 18,
-    color: '#0B1F3A',
+    fontSize: 16,
     marginBottom: 5,
   },
 
   activityType: {
-    fontSize: 18,
-    color: '#0B1F3A',
+    fontSize: 16,
     marginBottom: 5,
   },
 
   description: {
-    fontSize: 18,
-    color: '#0B1F3A',
+    fontSize: 16,
     marginBottom: 5,
   },
 
   deadline: {
-    fontSize: 18,
-    color: '#0B1F3A',
+    fontSize: 16,
   },
 
   buttonRow: {
     flexDirection: 'row',
-    width: '85%',
-    marginTop: 5,
-    marginBottom: 20,
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
 
   button: {
     backgroundColor: '#377979',
     paddingVertical: 12,
-    flex: 1,
-    marginHorizontal: 5,
+    width: '48%',
     borderRadius: 10,
     alignItems: 'center',
   },
 
   buttonText: {
-    color: '#f6fafa',
+    color: '#fff',
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: 14,
   },
+
 });

@@ -8,7 +8,6 @@ import {
   Image,
 } from 'react-native';
 
-import MenuBar from './MenuBar';
 
 export default function LogIn({ navigation }) {
 
@@ -20,49 +19,21 @@ export default function LogIn({ navigation }) {
       <View style={styles.taskBox}>
 
         <Text style={styles.title}>MY TASK</Text>
-
         <View style={styles.line} />
 
-        <TouchableOpacity
-          style={styles.option}
-          onPress={() => navigation.navigate('My Tasks')}
-        >
-          <Image
-            source={require('../assets/view.png')}
-            style={styles.icon}
-          />
-
-          <Text style={styles.optionText}>
-            My Tasks
-          </Text>
+        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('My Tasks')}>
+          <Image source={require('../assets/view.png')}style={styles.icon}/>
+          <Text style={styles.optionText}>My Tasks</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.option}
-          onPress={() => navigation.navigate('Enter Task')}
-        >
-          <Image
-            source={require('../assets/add.png')}
-            style={styles.icon}
-          />
-
-          <Text style={styles.optionText}>
-            Add New Task
-          </Text>
+        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Enter Task')} >
+          <Image source={require('../assets/add.png')} style={styles.icon}/>
+          <Text style={styles.optionText}>Add New Task</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.option}
-          onPress={() => navigation.navigate('Status')}
-        >
-          <Image
-            source={require('../assets/completed.png')}
-            style={styles.icon}
-          />
-
-          <Text style={styles.optionText}>
-            Tasks Status
-          </Text>
+        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Status Update')}>
+          <Image source={require('../assets/completed.png')}style={styles.icon}/>
+          <Text style={styles.optionText}>Tasks Status</Text>
         </TouchableOpacity>
 
       </View>

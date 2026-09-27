@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 import {
   StyleSheet,
   Text,
@@ -8,107 +6,33 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { Picker } from '@react-native-picker/picker';
 
-export default function EnterTask({ route, navigation }) {
-
-  const [title, setTitle] = useState('');
-  const [subject, setSubject] = useState('');
-  const [description, setDescription] = useState('');
-  const [activityType, setActivityType] = useState('');
-  const [deadline, setDeadline] = useState('');
-
-  // Get previous tasks
-  const existingTasks = route.params?.tasks || [];
-
-  const saveTask = () => {
-
-    const newTask = {
-      id: Date.now().toString(),
-      title,
-      subject,
-      activityType,
-      description,
-      deadline,
-    };
-
-    // Add new task to previous tasks
-    const updatedTasks = [...existingTasks, newTask];
-
-    navigation.navigate('Confirm Task', {
-      tasks: updatedTasks,
-    });
-  };
+export default function EnterTask({navigation }) {
 
   return (
     <View style={styles.container}>
 
       <Text style={styles.title}>NEW TASK</Text>
-
-      <Text style={styles.badis}>
-        __________________________________________
-      </Text>
+      <Text style={styles.badis}>__________________________________________</Text>
 
       <Text style={styles.text}>Title</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Title of your Activity:"
-        value={title}
-        onChangeText={setTitle}
-      />
-
+      <TextInput style={styles.input} placeholder="Title of your Activity:"/>
+      
       <Text style={styles.text}>Subject</Text>
+      <TextInput style={styles.input} placeholder="Select Subject:"/>
 
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={subject}
-          onValueChange={(itemValue) => setSubject(itemValue)}
-        >
-          <Picker.Item label="Mobile Programming" value="Mobile Programming" />
-          <Picker.Item label="Programming Language" value="Programming Language" />
-          <Picker.Item label="Software Engineering" value="Software Engineering" />
-          <Picker.Item label="Automata Theory" value="Automata Theory" />
-          <Picker.Item label="Reading Visual Art" value="Reading Visual Art" />
-        </Picker>
-      </View>
-
-      <Text style={styles.text}>Activity Type</Text>
-
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={activityType}
-          onValueChange={(itemValue) => setActivityType(itemValue)}
-        >
-          <Picker.Item label="Task" value="Task" />
-          <Picker.Item label="Assignment" value="Assignment" />
-        </Picker>
-      </View>
+      <Text style={styles.text}>Task Type</Text>
+      <TextInput style={styles.input} placeholder="Select Task Type:"/>
+      
 
       <Text style={styles.text}>Description</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Short Description:"
-        value={description}
-        onChangeText={setDescription}
-      />
-
+      <TextInput style={styles.input} placeholder="Type Description:"/>
+      
       <Text style={styles.text}>Deadline</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="YYYY-MM-DD"
-        keyboardType="numeric"
-        value={deadline}
-        onChangeText={setDeadline}
-      />
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={saveTask}
-      >
-        <Text style={styles.buttonText}>Done</Text>
+      <TextInput style={styles.input} placeholder=" Enter Deadline:"/>
+      
+      <TouchableOpacity style={styles.button}onPress={() => navigation.navigate('Confirm Task')}>
+      <Text style={styles.buttonText}>Done</Text>
       </TouchableOpacity>
 
     </View>
@@ -155,21 +79,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  pickerContainer: {
-    width: 300,
-    borderWidth: 1,
-    borderColor: '#377979',
-    borderRadius: 8,
-    marginBottom: 10,
-    backgroundColor: '#fff',
-    overflow: 'hidden',
-  },
-
   button: {
     backgroundColor: '#377979',
     paddingVertical: 12,
     alignItems: 'center',
-    width: 300,
+    width: 330,
     borderRadius: 10,
     marginTop: 10,
   },

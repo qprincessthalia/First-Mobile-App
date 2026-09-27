@@ -19,7 +19,6 @@ export default function MenuBar({ navigation }) {
   return (
     <View>
 
-      {/* TOGGLE BUTTON */}
       <TouchableOpacity
         style={styles.menuButton}
         onPress={() => setMenuOpen(true)}
@@ -27,7 +26,7 @@ export default function MenuBar({ navigation }) {
         <Text style={styles.menuText}>☰</Text>
       </TouchableOpacity>
 
-      {/* MENU */}
+      
       <Modal
         visible={menuOpen}
         transparent={true}
@@ -43,60 +42,21 @@ export default function MenuBar({ navigation }) {
 
           <View style={styles.menuBox}>
 
-            <TouchableOpacity
-              style={styles.menuOption}
-              onPress={() => {
-                closeMenu();
-                navigation.navigate('Home');
-              }}
-            >
-              <Text style={styles.menuOptionText}>
-                Home
-              </Text>
+            <TouchableOpacity style={styles.menuOption} onPress={() => {closeMenu();navigation.navigate('My Tasks');}}>
+              <Text style={styles.menuOptionText}>My Tasks</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuOption}
-              onPress={() => {
-                closeMenu();
-                navigation.navigate('My Tasks');
-              }}
-            >
-              <Text style={styles.menuOptionText}>
-                My Tasks
-              </Text>
+            <TouchableOpacity style={styles.menuOption} onPress={() => {closeMenu();navigation.navigate('Sorted Activity');}}>
+              <Text style={styles.menuOptionText}>Sorted Activity</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.menuOption}
-              onPress={() => {
-                closeMenu();
-                navigation.navigate('Sorted Activity');
-              }}
-            >
-              <Text style={styles.menuOptionText}>
-                Sorted Activity
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.menuOption}
-              onPress={() => {
-                closeMenu();
-                navigation.navigate('Status');
-              }}
-            >
-              <Text style={styles.menuOptionText}>
-                Status
-              </Text>
+            <TouchableOpacity style={styles.menuOption}onPress={() => {closeMenu();navigation.navigate('Status');}}>
+              <Text style={styles.menuOptionText}>Status</Text>
             </TouchableOpacity>
 
           </View>
-
         </TouchableOpacity>
-
       </Modal>
-
     </View>
   );
 }
@@ -127,7 +87,7 @@ const styles = StyleSheet.create({
 
   menuBox: {
     width: 180,
-    backgroundColor: '#fff',
+    backgroundColor: '#a6f2e3',
     borderRadius: 10,
     padding: 5,
     elevation: 10,

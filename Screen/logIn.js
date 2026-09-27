@@ -14,7 +14,7 @@ export default function LogIn({ navigation }) {
       <Text style={styles.title}>STUDENT LOGIN</Text>
 
       <Text style={styles.badis}>
-        ______________________________________
+        ______________________________________________________________
       </Text>
 
       <Text style={styles.text}>Student Number</Text>
