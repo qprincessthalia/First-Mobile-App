@@ -4,178 +4,113 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
 } from 'react-native';
 
 export default function ActivityStatus({ navigation }) {
-  const [status1, setStatus1] = useState('Completed');
-  const [status2, setStatus2] = useState('Pending');
-  const [status3, setStatus3] = useState('Pending');
+  const [subjects, setSubjects] = useState([
+    { id: 1, name: 'Subject 1', status: 'Completed' },
+    { id: 2, name: 'Subject 2', status: 'Pending' },
+    { id: 3, name: 'Subject 3', status: 'Pending' },
+  ]);
 
-  const [open, setOpen] = useState('');
+  const [openId, setOpenId] = useState(null);
+
+  const changeStatus = (id, status) => {
+    setSubjects(
+      subjects.map((subject) =>
+        subject.id === id
+          ? { ...subject, status: status }
+          : subject
+      )
+    );
+
+    setOpenId(null);
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.mainBox}>
-          <Text style={styles.title}>Activity Status</Text>
-          <View style={styles.divider} />
+    <View style={styles.container}>
 
-          {/* Subject 1 Card */}
-          <View style={styles.card}>
+      <View style={styles.box}>
+
+        <Text style={styles.title}>Activity Status</Text>
+
+        <View style={styles.line} />
+
+        {subjects.map((item) => (
+          <View key={item.id} style={styles.card}>
+
             <View style={styles.row}>
-              <Text style={styles.subjectText}>
-                Subject: <Text style={styles.subjectVal}>Subject 1</Text>
+
+              <Text style={styles.subject}>
+                Subject: {item.name}
               </Text>
+
               <TouchableOpacity
                 style={styles.statusButton}
-                onPress={() => setOpen(open === 'one' ? '' : 'one')}
+                onPress={() =>
+                  setOpenId(
+                    openId === item.id ? null : item.id
+                  )
+                }
               >
                 <Text
-                  style={[
-                    styles.statusText,
-                    status1 === 'Completed'
-                      ? styles.completedColor
-                      : styles.pendingColor,
-                  ]}
+                  style={
+                    item.status === 'Completed'
+                      ? styles.completed
+                      : styles.pending
+                  }
                 >
-                  {status1 || 'Select'}
+                  {item.status}
                 </Text>
-                <Text style={styles.arrow}> ⌄</Text>
+
+                <Text style={styles.arrow}>⌄</Text>
               </TouchableOpacity>
+
             </View>
 
-            {open === 'one' && (
+            {openId === item.id && (
               <View style={styles.dropdown}>
+
                 <TouchableOpacity
-                  style={styles.dropdownItem}
-                  onPress={() => {
-                    setStatus1('Pending');
-                    setOpen('');
-                  }}
+                  style={styles.option}
+                  onPress={() =>
+                    changeStatus(item.id, 'Pending')
+                  }
                 >
-                  <Text style={styles.pendingColor}>Pending</Text>
+                  <Text style={styles.pending}>
+                    Pending
+                  </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
-                  style={styles.dropdownItem}
-                  onPress={() => {
-                    setStatus1('Completed');
-                    setOpen('');
-                  }}
+                  style={styles.option}
+                  onPress={() =>
+                    changeStatus(item.id, 'Completed')
+                  }
                 >
-                  <Text style={styles.completedColor}>Completed</Text>
+                  <Text style={styles.completed}>
+                    Completed
+                  </Text>
                 </TouchableOpacity>
+
               </View>
             )}
+
           </View>
+        ))}
 
-          {/* Subject 2 Card */}
-          <View style={styles.card}>
-            <View style={styles.row}>
-              <Text style={styles.subjectText}>
-                Subject: <Text style={styles.subjectVal}>Subject 2</Text>
-              </Text>
-              <TouchableOpacity
-                style={styles.statusButton}
-                onPress={() => setOpen(open === 'two' ? '' : 'two')}
-              >
-                <Text
-                  style={[
-                    styles.statusText,
-                    status2 === 'Completed'
-                      ? styles.completedColor
-                      : styles.pendingColor,
-                  ]}
-                >
-                  {status2 || 'Select'}
-                </Text>
-                <Text style={styles.arrow}> ⌄</Text>
-              </TouchableOpacity>
-            </View>
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={() => navigation.navigate('Status')}
+        >
+          <Text style={styles.saveText}>
+            SAVE UPDATE
+          </Text>
+        </TouchableOpacity>
 
-            {open === 'two' && (
-              <View style={styles.dropdown}>
-                <TouchableOpacity
-                  style={styles.dropdownItem}
-                  onPress={() => {
-                    setStatus2('Pending');
-                    setOpen('');
-                  }}
-                >
-                  <Text style={styles.pendingColor}>Pending</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.dropdownItem}
-                  onPress={() => {
-                    setStatus2('Completed');
-                    setOpen('');
-                  }}
-                >
-                  <Text style={styles.completedColor}>Completed</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
+      </View>
 
-          {/* Subject 3 Card */}
-          <View style={styles.card}>
-            <View style={styles.row}>
-              <Text style={styles.subjectText}>
-                Subject: <Text style={styles.subjectVal}>Subject 3</Text>
-              </Text>
-              <TouchableOpacity
-                style={styles.statusButton}
-                onPress={() => setOpen(open === 'three' ? '' : 'three')}
-              >
-                <Text
-                  style={[
-                    styles.statusText,
-                    status3 === 'Completed'
-                      ? styles.completedColor
-                      : styles.pendingColor,
-                  ]}
-                >
-                  {status3 || 'Select'}
-                </Text>
-                <Text style={styles.arrow}> ⌄</Text>
-              </TouchableOpacity>
-            </View>
-
-            {open === 'three' && (
-              <View style={styles.dropdown}>
-                <TouchableOpacity
-                  style={styles.dropdownItem}
-                  onPress={() => {
-                    setStatus3('Pending');
-                    setOpen('');
-                  }}
-                >
-                  <Text style={styles.pendingColor}>Pending</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.dropdownItem}
-                  onPress={() => {
-                    setStatus3('Completed');
-                    setOpen('');
-                  }}
-                >
-                  <Text style={styles.completedColor}>Completed</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-
-          {/* Save Button */}
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={() => navigation?.navigate('My Tasks')}
-          >
-            <Text style={styles.saveButtonText}>SAVE TASKS</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -183,33 +118,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-  },
-  scrollContent: {
     padding: 20,
-    alignItems: 'center',
   },
-  mainBox: {
+
+  box: {
     width: '100%',
-    maxWidth: 400,
     borderWidth: 3,
     borderColor: '#307172',
     borderRadius: 28,
-    paddingHorizontal: 20,
-    paddingVertical: 24,
+    padding: 20,
     backgroundColor: '#F3F9F8',
   },
+
   title: {
     fontSize: 22,
     fontWeight: '700',
     textAlign: 'center',
-    color: '#000000',
     marginBottom: 16,
   },
-  divider: {
+
+  line: {
     height: 1.5,
     backgroundColor: '#A2C2C1',
     marginBottom: 20,
   },
+
   card: {
     borderWidth: 1.5,
     borderColor: '#416368',
@@ -218,40 +151,46 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     backgroundColor: '#FFFFFF',
   },
+
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  subjectText: {
-    fontSize: 15,
-    color: '#4A5568',
-    fontWeight: '400',
-  },
-  subjectVal: {
+
+  subject: {
     fontSize: 15,
     color: '#1A202C',
-    fontWeight: '500',
   },
+
   statusButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F3F9F8',
     borderWidth: 1,
     borderColor: '#416368',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
+    backgroundColor: '#F3F9F8',
   },
-  statusText: {
+
+  completed: {
+    color: '#2D8A60',
     fontSize: 14,
     fontWeight: '600',
   },
-  arrow: {
+
+  pending: {
+    color: '#D92846',
     fontSize: 14,
+    fontWeight: '600',
+  },
+
+  arrow: {
     marginLeft: 4,
     color: '#416368',
   },
+
   dropdown: {
     marginTop: 10,
     alignSelf: 'flex-end',
@@ -259,35 +198,23 @@ const styles = StyleSheet.create({
     borderColor: '#416368',
     borderRadius: 8,
     backgroundColor: '#FFFFFF',
+  },
+
+  option: {
+    padding: 10,
     minWidth: 120,
-    overflow: 'hidden',
   },
-  dropdownItem: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  completedColor: {
-    color: '#2D8A60',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  pendingColor: {
-    color: '#D92846',
-    fontSize: 14,
-    fontWeight: '600',
-  },
+
   saveButton: {
     backgroundColor: '#307172',
     borderRadius: 12,
     paddingVertical: 14,
     alignItems: 'center',
-    marginTop: 12,
+    marginTop: 4,
   },
-  saveButtonText: {
+
+  saveText: {
     color: '#FFFFFF',
-    fontSize: 14,
     fontWeight: '700',
-    letterSpacing: 0.5,
   },
 });
-

@@ -31,9 +31,9 @@ export default function LogIn({ navigation }) {
           <Text style={styles.optionText}>Add New Task</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Status Update')}>
+        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Status')}>
           <Image source={require('../assets/completed.png')}style={styles.icon}/>
-          <Text style={styles.optionText}>Tasks Status</Text>
+          <Text style={styles.optionText}>Status</Text>
         </TouchableOpacity>
 
       </View>

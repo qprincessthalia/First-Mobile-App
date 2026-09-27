@@ -12,6 +12,7 @@ import MyTask from './Screen/MyTask';
 import SortedActivity from './Screen/SortedActivity';
 import MenuBar from './Screen/MenuBar';
 import StatusUpdate from './Screen/StatusUpdate';
+import Status from './Screen/Status';
 
 const Stack = createNativeStackNavigator();
 
@@ -94,6 +95,20 @@ export default function App() {
       ),
       })}
       />
+
+     
+<Stack.Screen
+  name="Status"
+  component={Status}
+  options={({ navigation }) => ({
+    title: 'Status',
+    headerRight: () => (
+      <MenuBar navigation={navigation} />
+    ),
+  })}
+/>
+
+
 
         
         <Stack.Screen
