@@ -16,6 +16,7 @@ import Status from './Screen/Status';
 
 const Stack = createNativeStackNavigator();
 
+
 export default function App() {
   return (
     <NavigationContainer>

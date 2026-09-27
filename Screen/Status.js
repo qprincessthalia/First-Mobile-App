@@ -10,52 +10,38 @@ export default function StatusUpdate({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <Text style={styles.title}>TASK STATUS</Text>
-        
-        <View style={styles.line} />
-
-        <Text style={styles.sectionHeader}>Pending Activities</Text>
         <View style={styles.taskBox}>
-          
-          {/* Activity 1 */}
-          <View style={styles.activityBoxFirst}>
+
+          <Text style={styles.title}>TASK STATUS</Text>
+          <View style={styles.line} />
+
+          <Text style={styles.sectionHeader}>Pending Activities</Text>
+
+          <View style={styles.activityBox}>
             <Text style={styles.subjectLabel}>Subject: Mobile Programming</Text>
             <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
-            <Text style={styles.activityType}>Activity Type: MCO2</Text>
-            <Text style={styles.description}>Description: Create a Dynamic Mobile App</Text>
             <Text style={styles.deadline}>Deadline: December 5, 2026</Text>
           </View>
 
-        </View>
+          <Text style={styles.sectionHeader}>Completed Activities</Text>
 
-        {/* --- COMPLETED ACTIVITIES SECTION --- */}
-        <Text style={[styles.sectionHeader]}>Completed Activities</Text>
-        <View style={styles.taskBox}>
-
-          {/* Completed Item 1 */}
-          <View style={styles.activityBoxFirst}>
+          <View style={styles.activityBox}>
             <Text style={styles.subjectLabel}>Subject: Mobile Programming</Text>
             <Text style={styles.taskTitle}>Title: First Mobile App</Text>
             <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
           </View>
 
-          {/* Completed Item 2 */}
           <View style={styles.activityBox}>
             <Text style={styles.subjectLabel}>Subject: Reading Visual Art</Text>
             <Text style={styles.taskTitle}>Title: Learning Application</Text>
             <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
           </View>
 
-        </View>
+          <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('Status Update')}>
+            <Text style={styles.editButtonText}>EDIT</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.editButton}
-          onPress={() => navigation.navigate('Status Update')}
-        >
-          <Text style={styles.editButtonText}>
-            Edit
-          </Text>
-        </TouchableOpacity>
+        </View>
 
       </View>
     </ScrollView>
@@ -63,90 +49,100 @@ export default function StatusUpdate({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    backgroundColor: '#fff',
-  },
   container: {
     flex: 1,
+    alignItems: 'center',
     padding: 15,
+    backgroundColor:'#D5E8F0',
   },
+
+  taskBox: {
+    width: '100%',
+    padding: 25,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#C7E0EA',
+    borderRadius: 22,
+    marginTop: 10,
+  },
+
   title: {
-    fontSize: 25,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#008080',
-    marginBottom: 5,
+    color: '#527589',
     textAlign: 'center',
   },
+
   line: {
-    height: 2,
-    backgroundColor: '#008080',
-    marginBottom: 15,
+    width: '100%',
+    height: 1,
+    backgroundColor: '#C7E0EA',
+    marginTop: 15,
+    marginBottom: 20,
   },
+
   sectionHeader: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#2a5050',
-    marginBottom: 8,
-    marginTop: 2,
-  },
-  taskBox: {
-    width: '100%',
-    padding: 12,
-    borderWidth: 2,
-    borderColor: '#377979',
-    borderRadius: 15,
-    backgroundColor: '#F5F7FA',
+    color: '#527589',
     marginBottom: 10,
+    marginTop: 5,
   },
-  activityBoxFirst: {
-    marginBottom: 4,
-  },
+
   activityBox: {
-    borderTopWidth: 1,
-    borderTopColor: '#377979',
-    paddingTop: 10,
-    marginTop: 8,
-    marginBottom: 4,
+    width: '100%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#B8D5E1',
+    borderRadius: 12,
+    backgroundColor: '#F8FCFE',
+    marginBottom: 15,
   },
+
   subjectLabel: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#377979',
-    marginBottom: 2,
+    color: '#527589',
+    marginBottom: 5,
   },
+
   taskTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 3,
+    color: '#527589',
+    marginBottom: 5,
   },
+
   activityType: {
     fontSize: 14,
-    marginBottom: 3,
-    color: '#555',
+    color: '#527589',
+    marginBottom: 5,
   },
+
   description: {
     fontSize: 14,
-    marginBottom: 3,
-    color: '#555',
+    color: '#527589',
+    marginBottom: 5,
   },
+
   deadline: {
     fontSize: 14,
-    marginBottom: 3,
-    color: '#666',
+    color: '#527589',
   },
+
   editButton: {
-    backgroundColor: '#008080',
-    padding: 14,
+    width: '100%',
+    backgroundColor: '#8ABDD3',
+    paddingVertical: 13,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    marginTop: 5,
   },
+
   editButtonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
+
 });

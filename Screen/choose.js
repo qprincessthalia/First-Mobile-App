@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   StyleSheet,
   Text,
@@ -8,36 +6,32 @@ import {
   Image,
 } from 'react-native';
 
-
 export default function LogIn({ navigation }) {
-
   return (
     <View style={styles.container}>
-
-    
 
       <View style={styles.taskBox}>
 
         <Text style={styles.title}>MY TASK</Text>
+
         <View style={styles.line} />
 
-        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('My Tasks')}>
-          <Image source={require('../assets/view.png')}style={styles.icon}/>
-          <Text style={styles.optionText}>My Tasks</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Enter Task')} >
-          <Image source={require('../assets/add.png')} style={styles.icon}/>
+          <TouchableOpacity style={styles.option}onPress={() => navigation.navigate('Enter Task')}>
+          <Image source={require('../assets/add.png')}style={styles.icon}/>
           <Text style={styles.optionText}>Add New Task</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Status')}>
+        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('My Tasks')}>
+          <Image source={require('../assets/view.png')} style={styles.icon}/>
+          <Text style={styles.optionText}>My Tasks</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.option}onPress={() => navigation.navigate('Status')}>
           <Image source={require('../assets/completed.png')}style={styles.icon}/>
           <Text style={styles.optionText}>Status</Text>
         </TouchableOpacity>
 
       </View>
-
     </View>
   );
 }
@@ -45,32 +39,34 @@ export default function LogIn({ navigation }) {
 const styles = StyleSheet.create({
 
   container: {
-  flex: 1,
-  backgroundColor: '#fff',
-  alignItems: 'flex-start',
-  justifyContent: 'flex-start',
-},
-taskBox: {
-  width: '90%',
-  padding: 20,
-  backgroundColor: '#F5F7FA',
-  borderWidth: 2,
-  borderColor: '#377979',
-  borderRadius: 15,
-  marginTop: 20,
-  marginLeft: 15,
-},
+    flex: 1,
+    backgroundColor: '#D5E8F0',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 20,
+  },
+
+  taskBox: {
+    width: '100%',
+    padding: 25,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#C7E0EA',
+    borderRadius: 22,
+    marginTop: 10,
+  },
+
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#0B1F3A',
+    color: '#527589',
     textAlign: 'center',
   },
 
   line: {
     width: '100%',
     height: 1,
-    backgroundColor: '#D5DCE5',
+    backgroundColor: '#C7E0EA',
     marginTop: 15,
     marginBottom: 20,
   },
@@ -78,9 +74,9 @@ taskBox: {
   option: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#F1F8FB',
     borderWidth: 1,
-    borderColor: '#377979',
+    borderColor: '#B8D5E1',
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
@@ -93,9 +89,9 @@ taskBox: {
   },
 
   optionText: {
-    fontSize: 17,
-    color: '#0B1F3A',
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#527589',
   },
 
 });
