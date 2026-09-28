@@ -1,44 +1,46 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
+  StyleSheet, // allow customized design
+  View, // hold the entire page
+  Text, // display text
+  TouchableOpacity, // allow buttons to be clickable
+  ScrollView, // allows the page to be scrollable
 } from 'react-native';
 
-export default function SortedActivity() {
-  const [sortBy, setSortBy] = useState('');
+export default function SortedActivity() { // create sorted activity screen
+  const [sortBy, setSortBy] = useState(''); // stores the selected sorting option
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.taskBox}>
-
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}> {/* makes the page scrollable */}
+      <View style={styles.taskBox}>{/* holds the sorted activities */}
         <Text style={styles.title}>SORTED ACTIVITIES</Text>
         <View style={styles.line} />
 
         <View style={styles.buttonRow}>
-          <TouchableOpacity style={[ styles.button, sortBy === 'subject' && styles.activeButton ]} onPress={() => setSortBy('subject')}>
-            <Text style={styles.buttonText}>Sort by Subject</Text>
+          <TouchableOpacity style={[ styles.button, sortBy === 'subject' && styles.activeButton ]} onPress={() => setSortBy('subject')}> {/*// sets sorting to subject*/}
+            <Text style={styles.buttonText}>Sort by Subject</Text>{/* displays the button text */}
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, sortBy === 'deadline' && styles.activeButton ]} onPress={() => setSortBy('deadline')}>
-            <Text style={styles.buttonText}>Sort by Deadline</Text>
+          <TouchableOpacity style={[styles.button, sortBy === 'deadline' && styles.activeButton ]} onPress={() => setSortBy('deadline')}> {/*// sets sorting to deadline*/}
+            <Text style={styles.buttonText}>Sort by Deadline</Text>{/*displays the button text*/}
           </TouchableOpacity>
         </View>
 
+        {/* displays the activities sorted by subject */}
         {sortBy === 'subject' && (
           <View>
 
             <View style={styles.subjectBox}>
               <Text style={styles.subjectTitle}>Subject: Mobile Programming</Text>
 
+              {/* first activity*/}
               <View style={styles.activityBox}>
                 <Text style={styles.taskTitle}>Title: First Mobile App</Text>
                 <Text style={styles.text}>Activity Type: MCO1</Text>
                 <Text style={styles.text}>Deadline: September 30, 2026</Text>
               </View>
 
+              {/* second activity*/}
               <View style={styles.activityBox}>
                 <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
                 <Text style={styles.text}>Activity Type: MCO2</Text>
@@ -49,6 +51,7 @@ export default function SortedActivity() {
             <View style={styles.subjectBox}>
               <Text style={styles.subjectTitle}>Subject: Reading Visual Art</Text>
 
+              {/* third activity*/}
               <View style={styles.activityBox}>
                 <Text style={styles.taskTitle}>Title: Learning Application</Text>
                 <Text style={styles.text}>Activity Type: MCO1</Text>
@@ -60,15 +63,18 @@ export default function SortedActivity() {
           </View>
         )}
 
+         {/* displays the activities sorted by deadline */}
         {sortBy === 'deadline' && (
           <View>
 
+             {/* first activity */}
             <View style={styles.deadlineBox}>
               <Text style={styles.taskTitle}>Title: First Mobile App</Text>
               <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
               <Text style={styles.subject}>Subject: Mobile Programming</Text>
             </View>
 
+             {/* second activity */}
             <View style={styles.deadlineBox}>
               <Text style={styles.taskTitle}>Title: Learning Application</Text>
               <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
@@ -76,6 +82,7 @@ export default function SortedActivity() {
               </Text>
             </View>
 
+             {/* third activity */}
             <View style={styles.deadlineBox}>
               <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
               <Text style={styles.deadline}>Deadline: December 5, 2026</Text>

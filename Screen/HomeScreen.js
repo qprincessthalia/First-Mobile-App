@@ -1,16 +1,16 @@
 import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
+  StyleSheet, // design page
+  Text, // display text
+  View, // hold the entire page
+  TouchableOpacity, // makes buttons clickable
+  Image, // displays images
 } from 'react-native';
 
-import logo_pic from '../assets/task.png';
+import logo_pic from '../assets/task.png'; // get the app logo
 
 export default function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> {/*holds the whole page*/}
 
       <Image source={logo_pic} style={styles.logo}/>
 
@@ -21,8 +21,8 @@ export default function HomeScreen({ navigation }) {
 
       <Text style={styles.subtitle}> Welcome to your Task and Assignment Planner!</Text>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Start')}>
-        <Text style={styles.buttonText}>START</Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Start')}> {/*open the start page*/}
+        <Text style={styles.buttonText}>START</Text> {/*buttons name*/}
       </TouchableOpacity>
 
     </View>
@@ -80,3 +80,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+//components name 
+// StyleSheet 
+//Text – shows words
+//View – holds the page parts
+//TouchableOpacity – makes a clickable button
+//Image – shows the logo
+//HomeScreen – your home page component
+//navigation – moves to another page

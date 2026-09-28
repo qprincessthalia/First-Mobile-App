@@ -1,19 +1,19 @@
 import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
+  StyleSheet, // design the app
+  View, // hold the entire page
+  Text, // display text
+  TouchableOpacity, // allows buttons to be clickable
 } from 'react-native';
 
-export default function MyTask({ navigation }) {
+export default function MyTask({ navigation }) { // create the my task screen
+
   return (
-    <View style={styles.container}>
 
+    <View style={styles.container}> {/* hold the entire screen */}
       <Text style={styles.title}>MY TASKS</Text>
-
       <View style={styles.line} />
 
-      <View style={styles.taskBox}>
+      <View style={styles.taskBox}> {/* hold the first task */}
         <Text style={styles.taskTitle}>Title: First Mobile App</Text>
         <Text style={styles.subject}>Subject: Mobile Programming</Text>
         <Text style={styles.activityType}>Activity Type: MCO1</Text>
@@ -21,7 +21,8 @@ export default function MyTask({ navigation }) {
         <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
       </View>
 
-      <View style={styles.taskBox}>
+
+      <View style={styles.taskBox}> {/* hold the second task */}
         <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
         <Text style={styles.subject}>Subject: Mobile Programming</Text>
         <Text style={styles.activityType}>Activity Type: MCO2</Text>
@@ -29,28 +30,34 @@ export default function MyTask({ navigation }) {
         <Text style={styles.deadline}>Deadline: December 5, 2026</Text>
       </View>
 
-      <View style={styles.taskBox}>
+
+      <View style={styles.taskBox}> {/* hold the third task */}
         <Text style={styles.taskTitle}>Title: Learning Application</Text>
         <Text style={styles.subject}>Subject: Reading Visual Art</Text>
         <Text style={styles.activityType}>Activity Type: MCO1</Text>
-        <Text style={styles.description}>Description: Analyze 5 Filipino Artwork</Text>
-        <Text style={styles.deadline}>Deadline: Sept 30, 2026</Text>
+        <Text style={styles.description}> Description: Analyze 5 Filipino Artwork</Text>
+        <Text style={styles.deadline}> Deadline: Sept 30, 2026</Text>
       </View>
 
-      <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.button}onPress={() => navigation.navigate('Enter Task')}>
-          <Text style={styles.buttonText}>ADD TASK</Text>
+
+      <View style={styles.buttonRow}> {/* holds the buttons in one row */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Enter Task')}>
+          <Text style={styles.buttonText}>ADD TASK</Text> {/* displays the Add Task button text */}
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}onPress={() => navigation.navigate('Sorted Activity')}>
-          <Text style={styles.buttonText}>SORT ACTIVITY</Text>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Sorted Activity')}>
+          <Text style={styles.buttonText}>SORT ACTIVITY</Text> {/* displays the Sort activity button text */}
         </TouchableOpacity>
+
       </View>
-
     </View>
   );
 }
-
 const styles = StyleSheet.create({
 
   container: {

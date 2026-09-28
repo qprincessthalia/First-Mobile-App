@@ -1,46 +1,115 @@
 import React, { useState } from 'react';
+
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Modal,
+  View, // hold entire page
+  Text, // display text
+  TouchableOpacity, // makes buttons clickable
+  StyleSheet, // allows to customize design
+  Modal, // allow a screen to appear to another screen
 } from 'react-native';
 
-export default function MenuBar({ navigation }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function MenuBar({ navigation }) { // create the menu bar
+
+  const [menuOpen, setMenuOpen] = useState(false); // check if the menu is open
 
   const closeMenu = () => {
-    setMenuOpen(false);
+    setMenuOpen(false); // closes the menu
   };
 
   return (
-    <View>
-      <TouchableOpacity style={styles.menuButton} onPress={() => setMenuOpen(true)}>
-        <Text style={styles.menuText}>☰</Text>
+
+    <View> {/* holds the menu button and modal */}
+
+      <TouchableOpacity
+        style={styles.menuButton}
+        onPress={() => setMenuOpen(true)}
+      >
+
+        {/* opens the menu when user clicked */}
+
+        <Text style={styles.menuText}>☰</Text> {/* shows menu icon */}
+
       </TouchableOpacity>
 
-      <Modal visible={menuOpen} transparent={true} animationType="fade" onRequestClose={closeMenu} >
-        <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={closeMenu}>
+      <Modal
+        visible={menuOpen}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={closeMenu}
+      >
+
+        {/* creates the menu popup */}
+
+        <TouchableOpacity
+          style={styles.overlay}
+          activeOpacity={1}
+          onPress={closeMenu}
+        >
+
+          {/* closes the menu when the outside area is pressed */}
+
           <View style={styles.menuBox}>
+
+            {/* holds the menu options */}
 
             <Text style={styles.menuTitle}>MENU</Text>
 
-            <TouchableOpacity style={styles.menuOption} onPress={() => { closeMenu(); navigation.navigate('My Tasks'); }}>
+            {/* Menu Title */}
+
+            <TouchableOpacity
+              style={styles.menuOption}
+              onPress={() => {
+                closeMenu();
+                navigation.navigate('My Tasks');
+              }}
+            >
+
+              {/* go to my task screen */}
+
               <Text style={styles.menuOptionText}>My Tasks</Text>
+
+              {/* display my task */}
+
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.menuOption} onPress={() => { closeMenu(); navigation.navigate('Sorted Activity'); }}>
-              <Text style={styles.menuOptionText}> Sorted Activity</Text>
+            <TouchableOpacity
+              style={styles.menuOption}
+              onPress={() => {
+                closeMenu();
+                navigation.navigate('Sorted Activity');
+              }}
+            >
+
+              {/* go to Sorted Activity */}
+
+              <Text style={styles.menuOptionText}>Sorted Activity</Text>
+
+              {/* display my Sorted Activity */}
+
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.menuOption} onPress={() => {closeMenu(); navigation.navigate('Status');}}>
-              <Text style={styles.menuOptionText}> Status</Text>
+            <TouchableOpacity
+              style={styles.menuOption}
+              onPress={() => {
+                closeMenu();
+                navigation.navigate('Status');
+              }}
+            >
+
+              {/* go to status screen */}
+
+              <Text style={styles.menuOptionText}>Status</Text>
+
+              {/* display my status */}
+
             </TouchableOpacity>
 
           </View>
+
         </TouchableOpacity>
+
       </Modal>
+
     </View>
   );
 }

@@ -1,7 +1,5 @@
-import React from 'react';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native'; // Handles the navigation of the whole app.
+import { createNativeStackNavigator } from '@react-navigation/native-stack'; // Creates a stack system that manages the order of screens.
 
 import HomeScreen from './Screen/HomeScreen';
 import LogIn from './Screen/LogIn';
@@ -14,13 +12,15 @@ import MenuBar from './Screen/MenuBar';
 import StatusUpdate from './Screen/StatusUpdate';
 import Status from './Screen/Status';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator(); 
+// Creates the Stack Navigator that will manage the screens.
 
-
-export default function App() {
+export default function App() { 
   return (
     <NavigationContainer>
+
       <Stack.Navigator>
+
         <Stack.Screen
           name="Home"
           component={HomeScreen}
@@ -31,93 +31,106 @@ export default function App() {
           component={LogIn}
         />
 
-      <Stack.Screen
-      name="Activity"
-      component={Choose}
-      options={({ navigation }) => ({
-      title: 'Activity',
-      headerRight: () => (
-      <MenuBar navigation={navigation} />
-       ),
-      })}
-      />
-
-      <Stack.Screen
-      name="Enter Task"
-      component={EnterTask}
-      options={({ navigation }) => ({
-      title: 'Enter Task',
-      headerRight: () => (
-      <MenuBar navigation={navigation} />
-      ),
-      })}
-      />
-
-      <Stack.Screen
-      name="Confirm Task"
-      component={ConfirmTask}
-      options={({ navigation }) => ({
-      title: 'Confirm Task',
-      headerRight: () => (
-      <MenuBar navigation={navigation} />
-      ),
-      })}
-      />
-
-      <Stack.Screen
-      name="My Tasks"
-      component={MyTask}
-      options={({ navigation }) => ({
-      title: 'My Tasks',
-      headerRight: () => (
-      <MenuBar navigation={navigation} />
-      ),
-      })}
-      />
-
-      <Stack.Screen
-      name="Sorted Activity"
-      component={SortedActivity}
-      options={({ navigation }) => ({
-      title: 'Sorted Activity',
-      headerRight: () => (
-      <MenuBar navigation={navigation} />
-      ),
-      })}
-      />
-
-      <Stack.Screen
-      name="Status Update"
-      component={StatusUpdate}
-      options={({ navigation }) => ({
-      title: 'Status Update',
-      headerRight: () => (
-      <MenuBar navigation={navigation} />
-      ),
-      })}
-      />
-
-     
-<Stack.Screen
-  name="Status"
-  component={Status}
-  options={({ navigation }) => ({
-    title: 'Status',
-    headerRight: () => (
-      <MenuBar navigation={navigation} />
-    ),
-  })}
-/>
-
-
-
-        
         <Stack.Screen
-          name="Menu Bar"
-          component={MenuBar}
+          name="Activity"
+          component={Choose}
+          options={({ navigation }) => ({
+            title: 'Activity',
+            headerRight: () => (
+              <MenuBar navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="Enter Task"
+          component={EnterTask}
+          options={({ navigation }) => ({
+            title: 'Enter Task',
+            headerRight: () => (
+              <MenuBar navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="Confirm Task"
+          component={ConfirmTask}
+          options={({ navigation }) => ({
+            title: 'Confirm Task',
+            headerRight: () => (
+              <MenuBar navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="My Tasks"
+          component={MyTask}
+          options={({ navigation }) => ({
+            title: 'My Tasks',
+            headerRight: () => (
+              <MenuBar navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="Sorted Activity"
+          component={SortedActivity}
+          options={({ navigation }) => ({
+            title: 'Sorted Activity',
+            headerRight: () => (
+              <MenuBar navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="Status Update"
+          component={StatusUpdate}
+          options={({ navigation }) => ({
+            title: 'Status Update',
+            headerRight: () => (
+              <MenuBar navigation={navigation} />
+            ),
+          })}
+        />
+
+        <Stack.Screen
+          name="Status"
+          component={Status}
+          options={({ navigation }) => ({
+            title: 'Status',
+            headerRight: () => (
+              <MenuBar navigation={navigation} />
+            ),
+          })}
         />
 
       </Stack.Navigator>
+
     </NavigationContainer>
   );
 }
+
+
+// ---- COMPONENTS: 
+//HomeScreen
+//LogIn
+//Choose
+//EnterTask
+//ConfirmTask
+//MyTask
+//SortedActivity
+//MenuBar
+//StatusUpdate
+//Status 
+
+// -----React Navigation components — 3
+//NavigationContainer
+//Stack.Navigator
+//Stack.Screen
+
+//main component
+//app

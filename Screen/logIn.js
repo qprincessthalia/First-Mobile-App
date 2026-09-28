@@ -1,96 +1,93 @@
 import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
+  StyleSheet, // for styling
+  View, // hold the part of the page
+  Text, // display text
+  TextInput, //where you can type
+  TouchableOpacity, // make the buttons clickable
 } from 'react-native';
 
-export default function LogIn({ navigation }) {
+export default function LogIn({ navigation }) { // makes the login page
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
+    <View style={styles.container}> {/* Holds the whole page */}
 
-        <Text style={styles.title}>STUDENT LOGIN</Text>
+      <Text style={styles.title}>STUDENT LOGIN</Text> 
+      <View style={styles.line} />
 
-        <View style={styles.line} />
+      <View style={styles.loginBox}>
+        <Text style={styles.label}>Student Number</Text>
+        <TextInput style={styles.input} placeholder="Enter Student Number" placeholderTextColor="#abbac2" />
 
-        <Text style={styles.text}>Student Number</Text>
-        <TextInput style={styles.input} placeholder="Enter Student Number:" />
+        <Text style={styles.label}>Student Password</Text>
+        <TextInput style={styles.input} placeholder="Enter Password" placeholderTextColor="#abbac2"  />
 
-        <Text style={styles.text}>Student Password</Text>
-        <TextInput style={styles.input} placeholder="Enter Password:" />
+        <Text style={styles.label}>Student Username</Text>
+        <TextInput style={styles.input} placeholder="Enter Preferred Username" placeholderTextColor="#abbac2"/>
 
-        <Text style={styles.text}>Student Username</Text>
-        <TextInput style={styles.input} placeholder="Enter Preferred Username:" />
-
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Activity')} >
-          <Text style={styles.buttonText}>LOG IN</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Activity')}> {/* goes to activity page */}
+          <Text style={styles.buttonText}>LOG IN</Text> {/* Display Button name*/}
         </TouchableOpacity>
 
       </View>
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-  flex: 1,
-  backgroundColor: '#D5E8F0',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  padding: 20,
-},
-
-card: {
-  width: '100%',
-  backgroundColor: '#FFFFFF',
-  borderRadius: 22,
-  padding: 25,
-  borderWidth: 1,
-  borderColor: '#D5E8F0',
-},
+    flex: 1,
+    backgroundColor: '#D5E8F0',
+    padding: 20,
+  },
 
   title: {
-    fontSize: 27,
-    fontWeight: '800',
+    fontSize: 24,
+    fontWeight: 'bold',
     color: '#527589',
-    marginBottom: 12,
+    textAlign: 'center',
   },
 
   line: {
-    height: 2,
-    backgroundColor: '#C7E0EA',
-    marginBottom: 25,
+    height: 1,
+    backgroundColor: '#527589',
+    marginVertical: 15,
   },
 
-  text: {
-    fontSize: 18,
-    fontWeight: '700',
+  loginBox: {
+    width: '100%',
+    padding: 20,
+    borderWidth: 1,
+    borderColor: '#B8D5E1',
+    borderRadius: 15,
+    backgroundColor: '#FFFFFF',
+  },
+
+  label: {
+    fontSize: 16,
     color: '#527589',
-    marginBottom: 8,
+    marginBottom: 5,
   },
 
   input: {
-    borderWidth: 1.5,
+    width: '100%',
+    borderWidth: 1,
     borderColor: '#B8D5E1',
-    backgroundColor: '#F8FCFE',
-    padding: 12,
     borderRadius: 10,
-    marginBottom: 20,
+    padding: 12,
+    marginBottom: 15,
+    backgroundColor: '#F8FBFC',
   },
 
   button: {
     backgroundColor: '#8ABDD3',
-    paddingVertical: 13,
+    paddingVertical: 12,
     borderRadius: 10,
     alignItems: 'center',
+    marginTop: 5,
   },
 
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '800',
+    color: '#527589',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
 });

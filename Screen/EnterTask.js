@@ -1,22 +1,22 @@
 import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
+  StyleSheet, // design the page
+  Text, //display text
+  View, // hold the pages
+  TextInput, // let user type
+  TouchableOpacity, // makes the buttons clickable
 } from 'react-native';
 
-export default function EnterTask({ navigation }) {
+export default function EnterTask({ navigation }) { // create task page
   return (
-    <View style={styles.container}>
-      <View style={styles.taskBox}>
+    <View style={styles.container}> {/* holds the whole page*/}
+      <View style={styles.taskBox}> {/*hold task form*/}
 
         <Text style={styles.title}>NEW TASK</Text>
 
         <View style={styles.line} />
 
         <Text style={styles.text}>Title</Text>
-        <TextInput style={styles.input} placeholder="Title of your Activity:" />
+        <TextInput style={styles.input} placeholder="Title of your Activity:" /> 
 
         <Text style={styles.text}>Subject</Text>
         <TextInput style={styles.input} placeholder="Select Subject:"/>
@@ -30,8 +30,8 @@ export default function EnterTask({ navigation }) {
         <Text style={styles.text}>Deadline</Text>
         <TextInput style={styles.input} placeholder="Enter Deadline:"/>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Confirm Task')}>
-          <Text style={styles.buttonText}>DONE</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Confirm Task')}> {/*goes to confirm task page*/}
+          <Text style={styles.buttonText}>DONE</Text> {/*buttons name*/}
         </TouchableOpacity>
 
       </View>
