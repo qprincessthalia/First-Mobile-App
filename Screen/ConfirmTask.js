@@ -8,30 +8,39 @@ import {
 export default function ConfirmTask({ navigation }) { // creates the ConfirmTask screen
 
   return (
+  <View style={styles.container}>
+    <View style={styles.taskBox}>
+      <Text style={styles.title}>CONFIRM TASK</Text>
+      <View style={styles.line} />
 
-    <View style={styles.container}> {/* holds the entire page */}
-      <View style={styles.taskBox}> {/* holds the task details */}
+      <Text style={styles.taskTitle}>Title: First Mobile App</Text>
+      <Text style={styles.subject}>Subject: Mobile Programming</Text>
+      <Text style={styles.subject}>Activity Type: MCO 1</Text>
 
-        <Text style={styles.title}>CONFIRM TASK</Text> {/* displays the page title */}
-        <View style={styles.line} /> {/* creates a line under the title */}
+      <Text style={styles.description}>
+        Description: Create a Static Mobile App
+      </Text>
 
-        <Text style={styles.taskTitle}>Title: First Mobile App</Text> {/* displays the task title */}
-        <Text style={styles.subject}>Subject: Mobile Programming</Text> {/* displays the subject */}
-        <Text style={styles.subject}>Activity Type: MCO 1</Text> {/* displays the activity type */}
-        <Text style={styles.description}>Description: Create a Static Mobile App</Text> {/* displays the description */}
-        <Text style={styles.deadline}>Deadline: September 30, 2026</Text> {/* displays the deadline */}
+      <Text style={styles.deadline}>
+        Deadline: September 30, 2026
+      </Text>
 
-        <TouchableOpacity style={styles.saveButton} onPress={() => navigation.navigate('My Tasks')}>{/* navigates to the My Tasks screen */}
-          <Text style={styles.saveButtonText}>SAVE TASK</Text> {/* displays the Save Task button */}
-        </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.saveButton}
+        onPress={() => navigation.navigate('My Tasks')}
+      >
+        <Text style={styles.saveButtonText}>SAVE TASK</Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.goBack()}>   {/* goes back to the previous screen */}
-          <Text style={styles.cancelButtonText}>CANCEL</Text> {/* displays the Cancel button */}
-        </TouchableOpacity>
-
-      </View>
+      <TouchableOpacity
+        style={styles.cancelButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.cancelButtonText}>CANCEL</Text>
+      </TouchableOpacity>
     </View>
-  );
+  </View>
+);
 }
 
 const styles = StyleSheet.create({

@@ -8,28 +8,46 @@ import {
 
 export default function LogIn({ navigation }) { // makes the login page
   return (
-    <View style={styles.container}> {/* Holds the whole page */}
+  <View style={styles.container}>
 
-      <Text style={styles.title}>STUDENT LOGIN</Text> 
-      <View style={styles.line} />
+    <Text style={styles.title}>STUDENT LOGIN</Text>
+    <View style={styles.line} />
 
-      <View style={styles.loginBox}>
-        <Text style={styles.label}>Student Number</Text>
-        <TextInput style={styles.input} placeholder="Enter Student Number" placeholderTextColor="#abbac2" />
+    <View style={styles.loginBox}>
+  <Text style={styles.label}>Student Number</Text>
 
-        <Text style={styles.label}>Student Password</Text>
-        <TextInput style={styles.input} placeholder="Enter Password" placeholderTextColor="#abbac2"  />
+  <TextInput
+    style={styles.input}
+    placeholder="Enter Student Number"
+    placeholderTextColor="#abbac2"
+  />
 
-        <Text style={styles.label}>Student Username</Text>
-        <TextInput style={styles.input} placeholder="Enter Preferred Username" placeholderTextColor="#abbac2"/>
+  <Text style={styles.label}>Student Password</Text>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Activity')}> {/* goes to activity page */}
-          <Text style={styles.buttonText}>LOG IN</Text> {/* Display Button name*/}
-        </TouchableOpacity>
+  <TextInput
+    style={styles.input}
+    placeholder="Enter Password"
+    placeholderTextColor="#abbac2"
+  />
 
-      </View>
-    </View>
-  );
+  <Text style={styles.label}>Student Username</Text>
+
+  <TextInput
+    style={styles.input}
+    placeholder="Enter Preferred Username"
+    placeholderTextColor="#abbac2"
+  />
+
+  <TouchableOpacity
+    style={styles.button}
+    onPress={() => navigation.navigate('Activity')}
+  >
+    <Text style={styles.buttonText}>LOG IN</Text>
+  </TouchableOpacity>
+</View>
+
+  </View>
+);
 }
 
 const styles = StyleSheet.create({

@@ -1,176 +1,153 @@
 import React, { useState } from 'react';
 
 import {
-  View, // hold entire page
-  Text, // display text
-  TouchableOpacity, // makes buttons clickable
-  StyleSheet, // allows to customize design
-  Modal, // allow a screen to appear to another screen
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  StyleSheet,
 } from 'react-native';
 
-export default function MenuBar({ navigation }) { // create the menu bar
+export default function MenuBar({ navigation }) {
 
-  const [menuOpen, setMenuOpen] = useState(false); // check if the menu is open
-
-  const closeMenu = () => {
-    setMenuOpen(false); // closes the menu
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-
-    <View> {/* holds the menu button and modal */}
-
+    <View>
       <TouchableOpacity
         style={styles.menuButton}
         onPress={() => setMenuOpen(true)}
       >
-
-        {/* opens the menu when user clicked */}
-
-        <Text style={styles.menuText}>☰</Text> {/* shows menu icon */}
-
+        <Text style={styles.menuIcon}>☰</Text>
       </TouchableOpacity>
 
       <Modal
         visible={menuOpen}
         transparent={true}
         animationType="fade"
-        onRequestClose={closeMenu}
+        onRequestClose={() => setMenuOpen(false)}
       >
-
-        {/* creates the menu popup */}
-
-        <TouchableOpacity
-          style={styles.overlay}
-          activeOpacity={1}
-          onPress={closeMenu}
-        >
-
-          {/* closes the menu when the outside area is pressed */}
+        <View style={styles.overlay}>
 
           <View style={styles.menuBox}>
 
-            {/* holds the menu options */}
-
             <Text style={styles.menuTitle}>MENU</Text>
 
-            {/* Menu Title */}
+            <View style={styles.line} />
 
             <TouchableOpacity
-              style={styles.menuOption}
+              style={styles.menuItem}
               onPress={() => {
-                closeMenu();
-                navigation.navigate('My Tasks');
+                setMenuOpen(false);
+                navigation.navigate('Home');
               }}
             >
-
-              {/* go to my task screen */}
-
-              <Text style={styles.menuOptionText}>My Tasks</Text>
-
-              {/* display my task */}
-
+              <Text style={styles.menuText}>Home</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.menuOption}
+              style={styles.menuItem}
               onPress={() => {
-                closeMenu();
+                setMenuOpen(false);
                 navigation.navigate('Sorted Activity');
               }}
             >
-
-              {/* go to Sorted Activity */}
-
-              <Text style={styles.menuOptionText}>Sorted Activity</Text>
-
-              {/* display my Sorted Activity */}
-
+              <Text style={styles.menuText}>Sorted Activity</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.menuOption}
+              style={styles.menuItem}
               onPress={() => {
-                closeMenu();
+                setMenuOpen(false);
                 navigation.navigate('Status');
               }}
             >
+              <Text style={styles.menuText}>Status</Text>
+            </TouchableOpacity>
 
-              {/* go to status screen */}
-
-              <Text style={styles.menuOptionText}>Status</Text>
-
-              {/* display my status */}
-
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setMenuOpen(false)}
+            >
+              <Text style={styles.closeText}>CLOSE</Text>
             </TouchableOpacity>
 
           </View>
 
-        </TouchableOpacity>
-
+        </View>
       </Modal>
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+
   menuButton: {
-    width: 45,
-    height: 45,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 5,
+    padding: 8,
+    marginRight: 10,
   },
 
-  menuText: {
-    color: '#527589',
+  menuIcon: {
     fontSize: 25,
+    color: '#527589',
     fontWeight: 'bold',
   },
 
   overlay: {
     flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
     alignItems: 'flex-end',
-    paddingTop: 65,
+    paddingTop: 55,
     paddingRight: 15,
   },
 
   menuBox: {
-    width: 200,
+    width: 220,
     backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 10,
+    padding: 20,
+    borderRadius: 15,
     borderWidth: 1,
     borderColor: '#C7E0EA',
-    elevation: 8,
-    shadowColor: '#527589',
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
   },
 
   menuTitle: {
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#527589',
-    paddingHorizontal: 5,
-    paddingVertical: 8,
-  },
-
-  menuOption: {
-    backgroundColor: '#F8FCFE',
-    borderWidth: 1,
-    borderColor: '#C7E0EA',
-    borderRadius: 10,
-    paddingVertical: 13,
-    paddingHorizontal: 15,
-    marginBottom: 8,
-  },
-
-  menuOptionText: {
-    fontSize: 16,
-    fontWeight: '600',
     color: '#527589',
     textAlign: 'center',
   },
+
+  line: {
+    height: 1,
+    backgroundColor: '#C7E0EA',
+    marginVertical: 15,
+  },
+
+  menuItem: {
+    backgroundColor: '#F8FCFE',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+
+  menuText: {
+    fontSize: 15,
+    color: '#527589',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+
+  closeButton: {
+    backgroundColor: '#8ABDD3',
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 5,
+  },
+
+  closeText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+
 });

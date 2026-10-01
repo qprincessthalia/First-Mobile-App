@@ -8,36 +8,50 @@ import {
 
 export default function EnterTask({ navigation }) { // create task page
   return (
-    <View style={styles.container}> {/* holds the whole page*/}
-      <View style={styles.taskBox}> {/*hold task form*/}
+  <View style={styles.container}>
+    <View style={styles.taskBox}>
+      <Text style={styles.title}>NEW TASK</Text>
+      <View style={styles.line} />
 
-        <Text style={styles.title}>NEW TASK</Text>
+      <Text style={styles.text}>Title</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Title of your Activity:"
+      />
 
-        <View style={styles.line} />
+      <Text style={styles.text}>Subject</Text>
+      <TextInput 
+        style={styles.input} 
+        placeholder="Select Subject:"
+      />
 
-        <Text style={styles.text}>Title</Text>
-        <TextInput style={styles.input} placeholder="Title of your Activity:" /> 
+      <Text style={styles.text}>Task Type</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Select Task Type:"
+      />
 
-        <Text style={styles.text}>Subject</Text>
-        <TextInput style={styles.input} placeholder="Select Subject:"/>
+      <Text style={styles.text}>Description</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Type Description:"
+      />
 
-        <Text style={styles.text}>Task Type</Text>
-        <TextInput style={styles.input} placeholder="Select Task Type:" />
+      <Text style={styles.text}>Deadline</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter Deadline:"
+      />
 
-        <Text style={styles.text}>Description</Text>
-        <TextInput style={styles.input} placeholder="Type Description:" />
-
-        <Text style={styles.text}>Deadline</Text>
-        <TextInput style={styles.input} placeholder="Enter Deadline:"/>
-
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Confirm Task')}> {/*goes to confirm task page*/}
-          <Text style={styles.buttonText}>DONE</Text> {/*buttons name*/}
-        </TouchableOpacity>
-
-      </View>
-
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Confirm Task')}
+      >
+        <Text style={styles.buttonText}>DONE</Text>
+      </TouchableOpacity>
     </View>
-  );
+  </View>
+);
 }
 
 const styles = StyleSheet.create({

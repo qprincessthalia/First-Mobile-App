@@ -11,90 +11,138 @@ export default function SortedActivity() { // create sorted activity screen
   const [sortBy, setSortBy] = useState(''); // stores the selected sorting option
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}> {/* makes the page scrollable */}
-      <View style={styles.taskBox}>{/* holds the sorted activities */}
-        <Text style={styles.title}>SORTED ACTIVITIES</Text>
-        <View style={styles.line} />
+  <View style={styles.container}>
+    <View style={styles.taskBox}>
+      <Text style={styles.title}>SORTED ACTIVITIES</Text>
 
-        <View style={styles.buttonRow}>
-          <TouchableOpacity style={[ styles.button, sortBy === 'subject' && styles.activeButton ]} onPress={() => setSortBy('subject')}> {/*// sets sorting to subject*/}
-            <Text style={styles.buttonText}>Sort by Subject</Text>{/* displays the button text */}
-          </TouchableOpacity>
+      <View style={styles.line} />
 
-          <TouchableOpacity style={[styles.button, sortBy === 'deadline' && styles.activeButton ]} onPress={() => setSortBy('deadline')}> {/*// sets sorting to deadline*/}
-            <Text style={styles.buttonText}>Sort by Deadline</Text>{/*displays the button text*/}
-          </TouchableOpacity>
-        </View>
+      <View style={styles.buttonRow}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => setSortBy('subject')}
+        >
+          <Text style={styles.buttonText}>Sort by Subject</Text>
+        </TouchableOpacity>
 
-        {/* displays the activities sorted by subject */}
-        {sortBy === 'subject' && (
-          <View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => setSortBy('deadline')}
+        >
+          <Text style={styles.buttonText}>Sort by Deadline</Text>
+        </TouchableOpacity>
+      </View>
 
-            <View style={styles.subjectBox}>
-              <Text style={styles.subjectTitle}>Subject: Mobile Programming</Text>
+      {sortBy === 'subject' && (
+        <View>
+          <View style={styles.subjectBox}>
+            <Text style={styles.subjectTitle}>
+              Subject: Mobile Programming
+            </Text>
 
-              {/* first activity*/}
-              <View style={styles.activityBox}>
-                <Text style={styles.taskTitle}>Title: First Mobile App</Text>
-                <Text style={styles.text}>Activity Type: MCO1</Text>
-                <Text style={styles.text}>Deadline: September 30, 2026</Text>
-              </View>
+            <View style={styles.activityBox}>
+              <Text style={styles.taskTitle}>
+                Title: First Mobile App
+              </Text>
 
-              {/* second activity*/}
-              <View style={styles.activityBox}>
-                <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
-                <Text style={styles.text}>Activity Type: MCO2</Text>
-                <Text style={styles.text}>Deadline: December 5, 2026</Text>
-              </View>
-            </View>
+              <Text style={styles.text}>
+                Activity Type: MCO 1
+              </Text>
 
-            <View style={styles.subjectBox}>
-              <Text style={styles.subjectTitle}>Subject: Reading Visual Art</Text>
-
-              {/* third activity*/}
-              <View style={styles.activityBox}>
-                <Text style={styles.taskTitle}>Title: Learning Application</Text>
-                <Text style={styles.text}>Activity Type: MCO1</Text>
-                <Text style={styles.text}>Description: Analyze 5 Filipino artwork</Text>
-                <Text style={styles.text}>Deadline: September 30, 2026</Text>
-              </View>
-            </View>
-
-          </View>
-        )}
-
-         {/* displays the activities sorted by deadline */}
-        {sortBy === 'deadline' && (
-          <View>
-
-             {/* first activity */}
-            <View style={styles.deadlineBox}>
-              <Text style={styles.taskTitle}>Title: First Mobile App</Text>
-              <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
-              <Text style={styles.subject}>Subject: Mobile Programming</Text>
-            </View>
-
-             {/* second activity */}
-            <View style={styles.deadlineBox}>
-              <Text style={styles.taskTitle}>Title: Learning Application</Text>
-              <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
-              <Text style={styles.subject}>Subject: Reading Visual Art
+              <Text style={styles.text}>
+                Deadline: September 30, 2026
               </Text>
             </View>
 
-             {/* third activity */}
-            <View style={styles.deadlineBox}>
-              <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
-              <Text style={styles.deadline}>Deadline: December 5, 2026</Text>
-              <Text style={styles.subject}>Subject: Mobile Programming</Text>
+            <View style={styles.activityBox}>
+              <Text style={styles.taskTitle}>
+                Title: Second Mobile App
+              </Text>
+
+              <Text style={styles.text}>
+                Activity Type: MCO 2
+              </Text>
+
+              <Text style={styles.text}>
+                Deadline: December 5, 2026
+              </Text>
             </View>
-
           </View>
-        )}
 
-      </View>
-    </ScrollView>
-  );
+          <View style={styles.subjectBox}>
+            <Text style={styles.subjectTitle}>
+              Subject: Reading Visual Art
+            </Text>
+
+            <View style={styles.activityBox}>
+              <Text style={styles.taskTitle}>
+                Title: Learning Application
+              </Text>
+
+              <Text style={styles.text}>
+                Activity Type: MCO 1
+              </Text>
+
+              <Text style={styles.text}>
+                Description: Analyze 5 Filipino artwork
+              </Text>
+
+              <Text style={styles.text}>
+                Deadline: September 30, 2026
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
+
+      {sortBy === 'deadline' && (
+        <View>
+          <View style={styles.deadlineBox}>
+            <Text style={styles.taskTitle}>
+              Title: First Mobile App
+            </Text>
+
+            <Text style={styles.deadline}>
+              Deadline: September 30, 2026
+            </Text>
+
+            <Text style={styles.subject}>
+              Subject: Mobile Programming
+            </Text>
+          </View>
+
+          <View style={styles.deadlineBox}>
+            <Text style={styles.taskTitle}>
+              Title: Learning Application
+            </Text>
+
+            <Text style={styles.deadline}>
+              Deadline: September 30, 2026
+            </Text>
+
+            <Text style={styles.subject}>
+              Subject: Reading Visual Art
+            </Text>
+          </View>
+
+          <View style={styles.deadlineBox}>
+            <Text style={styles.taskTitle}>
+              Title: Second Mobile App
+            </Text>
+
+            <Text style={styles.deadline}>
+              Deadline: December 5, 2026
+            </Text>
+
+            <Text style={styles.subject}>
+              Subject: Mobile Programming
+            </Text>
+          </View>
+        </View>
+      )}
+    </View>
+  </View>
+);
 }
 
 const styles = StyleSheet.create({

@@ -8,56 +8,66 @@ import {
 export default function MyTask({ navigation }) { // create the my task screen
 
   return (
+    <View style={styles.container}>
+      <View style={styles.taskBox}>
+        <Text style={styles.title}>MY TASKS</Text>
 
-    <View style={styles.container}> {/* hold the entire screen */}
-      <Text style={styles.title}>MY TASKS</Text>
-      <View style={styles.line} />
+        <View style={styles.line} />
 
-      <View style={styles.taskBox}> {/* hold the first task */}
-        <Text style={styles.taskTitle}>Title: First Mobile App</Text>
-        <Text style={styles.subject}>Subject: Mobile Programming</Text>
-        <Text style={styles.activityType}>Activity Type: MCO1</Text>
-        <Text style={styles.description}>Description: Create a Static Mobile App</Text>
-        <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
-      </View>
+        <View style={styles.activityBox}>
+          <Text style={styles.taskTitle}>Title: First Mobile App</Text>
+          <Text style={styles.subject}>Subject: Mobile Programming</Text>
+          <Text style={styles.activityType}>Activity Type: MCO 1</Text>
+          <Text style={styles.description}>
+            Description: Create a Static Mobile App
+          </Text>
+          <Text style={styles.deadline}>
+            Deadline: September 30, 2026
+          </Text>
+        </View>
 
+        <View style={styles.activityBox}>
+          <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
+          <Text style={styles.subject}>Subject: Mobile Programming</Text>
+          <Text style={styles.activityType}>Activity Type: MCO 2</Text>
+          <Text style={styles.deadline}>
+            Deadline: December 5, 2026
+          </Text>
+        </View>
 
-      <View style={styles.taskBox}> {/* hold the second task */}
-        <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
-        <Text style={styles.subject}>Subject: Mobile Programming</Text>
-        <Text style={styles.activityType}>Activity Type: MCO2</Text>
-        <Text style={styles.description}>Description: Create a Dynamic Mobile App</Text>
-        <Text style={styles.deadline}>Deadline: December 5, 2026</Text>
-      </View>
+        <View style={styles.activityBox}>
+          <Text style={styles.taskTitle}>Title: Learning Application</Text>
+          <Text style={styles.subject}>Subject: Reading Visual Art</Text>
+          <Text style={styles.activityType}>Activity Type: MCO 1</Text>
+          <Text style={styles.description}>
+            Description: Analyze 5 Filipino artwork
+          </Text>
+          <Text style={styles.deadline}>
+            Deadline: September 30, 2026
+          </Text>
+        </View>
 
+        <View style={styles.buttonRow}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('Enter Task')}
+          >
+            <Text style={styles.buttonText}>ADD TASK</Text>
+          </TouchableOpacity>
 
-      <View style={styles.taskBox}> {/* hold the third task */}
-        <Text style={styles.taskTitle}>Title: Learning Application</Text>
-        <Text style={styles.subject}>Subject: Reading Visual Art</Text>
-        <Text style={styles.activityType}>Activity Type: MCO1</Text>
-        <Text style={styles.description}> Description: Analyze 5 Filipino Artwork</Text>
-        <Text style={styles.deadline}> Deadline: Sept 30, 2026</Text>
-      </View>
-
-
-      <View style={styles.buttonRow}> {/* holds the buttons in one row */}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Enter Task')}>
-          <Text style={styles.buttonText}>ADD TASK</Text> {/* displays the Add Task button text */}
-        </TouchableOpacity>
-
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Sorted Activity')}>
-          <Text style={styles.buttonText}>SORT ACTIVITY</Text> {/* displays the Sort activity button text */}
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('Sorted Activity')}
+          >
+            <Text style={styles.buttonText}>SORT</Text>
+          </TouchableOpacity>
+        </View>
 
       </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
 
   container: {
@@ -87,6 +97,15 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 10,
     backgroundColor: '#FFFFFF',
+  },
+
+  activityBox: {
+    backgroundColor: '#F8FCFE',
+    borderWidth: 1,
+    borderColor: '#C7E0EA',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 12,
   },
 
   taskTitle: {
@@ -122,7 +141,7 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 1,
+    marginTop: 5,
   },
 
   button: {
@@ -134,7 +153,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: '#527589',
+    color: '#FFFFFF',
     fontWeight: 'bold',
     fontSize: 14,
   },

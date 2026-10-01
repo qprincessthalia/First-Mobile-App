@@ -1,10 +1,11 @@
-import React, { useState } from 'react'; 
-
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   StyleSheet, // allows customized design
   View, // holds the page elements
   Text, // displays text
   TouchableOpacity, // allows buttons to be clickable
+  ScrollView, // allows scrolling
 } from 'react-native';
 
 export default function ActivityStatus({ navigation }) { // creates the ActivityStatus screen
@@ -19,17 +20,17 @@ export default function ActivityStatus({ navigation }) { // creates the Activity
     },
 
     {
-      id: 2, 
-      subject: 'Mobile Programming', 
-      title: 'Second Mobile App', 
-      status: 'Pending', 
+      id: 2,
+      subject: 'Mobile Programming',
+      title: 'Second Mobile App',
+      status: 'Pending',
     },
 
     {
-      id: 3, 
-      subject: 'Reading Visual Art', 
-      title: 'Learning Application', 
-      status: 'Pending', 
+      id: 3,
+      subject: 'Reading Visual Art',
+      title: 'Learning Application',
+      status: 'Pending',
     },
 
   ]);
@@ -55,90 +56,215 @@ export default function ActivityStatus({ navigation }) { // creates the Activity
   };
 
   return (
+    <SafeAreaView style={styles.safeArea}>
 
-    <View style={styles.container}> {/* holds the entire page */}
-      <View style={styles.box}> {/* holds the activity status content */}
-        <Text style={styles.title}>ACTIVITY STATUS</Text> {/* displays the page title */}
-        <View style={styles.line} /> {/* creates a line under the title */}
-        {activities.map((item) => ( // displays each activity
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={true}
+      >
 
-          <View key={item.id} style={styles.card}> {/* creates a card for each activity */}
+        <View style={styles.taskBox}>
 
-            <Text style={styles.subject}>
-              Subject: {item.subject}
-            </Text> {/* displays the subject */}
+          <Text style={styles.title}>TASK STATUS</Text>
 
-            <Text style={styles.titleText}>
-              Title: {item.title}
-            </Text> {/* displays the activity title */}
+          <View style={styles.line} />
+
+          <Text style={styles.sectionHeader}>Pending Activities</Text>
+
+          <View style={styles.activityBox}>
+
+            <Text style={styles.subjectLabel}>
+              Subject: Mobile Programming
+            </Text>
+
+            <Text style={styles.taskTitle}>
+              Title: Second Mobile App
+            </Text>
+
+            <Text style={styles.deadline}>
+              Deadline: December 5, 2026
+            </Text>
 
             <TouchableOpacity
               style={styles.statusButton}
-              onPress={() => setOpenId(openId === item.id ? null : item.id)}
+              onPress={() => setOpenId(openId === 2 ? null : 2)}
             >
-              {/* opens or closes the status dropdown */}
-
               <Text
-                style={item.status === 'Completed' ? styles.completed : styles.pending}
+                style={
+                  activities[1].status === 'Completed'
+                    ? styles.completed
+                    : styles.pending
+                }
               >
-                {item.status}
-              </Text> {/* displays the current status */}
+                {activities[1].status}
+              </Text>
 
-              <Text style={styles.arrow}>⌄</Text> {/* displays the dropdown arrow */}
-
+              <Text style={styles.arrow}>▼</Text>
             </TouchableOpacity>
 
-            {openId === item.id && ( // displays the dropdown when this activity is selected
-
-              <View style={styles.dropdown}> {/* holds the status options */}
+            {openId === 2 && (
+              <View style={styles.dropdown}>
 
                 <TouchableOpacity
                   style={styles.option}
-                  onPress={() => changeStatus(item.id, 'Pending')}
+                  onPress={() => changeStatus(2, 'Completed')}
                 >
-                  {/* changes the activity status to Pending */}
-
-                  <Text style={styles.pending}>Pending</Text> {/* displays Pending option */}
-
+                  <Text style={styles.completed}>Completed</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={styles.option}
-                  onPress={() => changeStatus(item.id, 'Completed')}
+                  onPress={() => changeStatus(2, 'Pending')}
                 >
-                  {/* changes the activity status to Completed */}
-
-                  <Text style={styles.completed}>Completed</Text> {/* displays Completed option */}
+                  <Text style={styles.pending}>Pending</Text>
                 </TouchableOpacity>
 
               </View>
             )}
 
           </View>
-        ))}
 
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={() => navigation.navigate('Status')}
-        >
-          {/* navigates to the Status screen */}
+          <Text style={styles.sectionHeader}>Completed Activities</Text>
 
-          <Text style={styles.saveText}>SAVE UPDATE</Text> {/* displays the save button text */}
+          <View style={styles.activityBox}>
 
-        </TouchableOpacity>
-      </View>
-    </View>
+            <Text style={styles.subjectLabel}>
+              Subject: Mobile Programming
+            </Text>
+
+            <Text style={styles.taskTitle}>
+              Title: First Mobile App
+            </Text>
+
+            <Text style={styles.deadline}>
+              Deadline: September 30, 2026
+            </Text>
+
+            <TouchableOpacity
+              style={styles.statusButton}
+              onPress={() => setOpenId(openId === 1 ? null : 1)}
+            >
+              <Text
+                style={
+                  activities[0].status === 'Completed'
+                    ? styles.completed
+                    : styles.pending
+                }
+              >
+                {activities[0].status}
+              </Text>
+
+              <Text style={styles.arrow}>▼</Text>
+            </TouchableOpacity>
+
+            {openId === 1 && (
+              <View style={styles.dropdown}>
+
+                <TouchableOpacity
+                  style={styles.option}
+                  onPress={() => changeStatus(1, 'Completed')}
+                >
+                  <Text style={styles.completed}>Completed</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.option}
+                  onPress={() => changeStatus(1, 'Pending')}
+                >
+                  <Text style={styles.pending}>Pending</Text>
+                </TouchableOpacity>
+
+              </View>
+            )}
+
+          </View>
+
+          <View style={styles.activityBox}>
+
+            <Text style={styles.subjectLabel}>
+              Subject: Reading Visual Art
+            </Text>
+
+            <Text style={styles.taskTitle}>
+              Title: Learning Application
+            </Text>
+
+            <Text style={styles.deadline}>
+              Deadline: September 30, 2026
+            </Text>
+
+            <TouchableOpacity
+              style={styles.statusButton}
+              onPress={() => setOpenId(openId === 3 ? null : 3)}
+            >
+              <Text
+                style={
+                  activities[2].status === 'Completed'
+                    ? styles.completed
+                    : styles.pending
+                }
+              >
+                {activities[2].status}
+              </Text>
+
+              <Text style={styles.arrow}>▼</Text>
+            </TouchableOpacity>
+
+            {openId === 3 && (
+              <View style={styles.dropdown}>
+
+                <TouchableOpacity
+                  style={styles.option}
+                  onPress={() => changeStatus(3, 'Completed')}
+                >
+                  <Text style={styles.completed}>Completed</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.option}
+                  onPress={() => changeStatus(3, 'Pending')}
+                >
+                  <Text style={styles.pending}>Pending</Text>
+                </TouchableOpacity>
+
+              </View>
+            )}
+
+          </View>
+
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={() => navigation.navigate('Status')}
+          >
+            <Text style={styles.saveText}>SAVE UPDATE</Text>
+          </TouchableOpacity>
+
+        </View>
+
+      </ScrollView>
+
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+
+  safeArea: {
     flex: 1,
     backgroundColor: '#D5E8F0',
-    padding: 20,
   },
 
-  box: {
+  container: {
+    flex: 1,
+  },
+
+  content: {
+    padding: 20,
+    paddingBottom: 80,
+  },
+
+  taskBox: {
     backgroundColor: '#FFFFFF',
     padding: 20,
     borderRadius: 20,
@@ -158,24 +284,37 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 
-  card: {
+  sectionHeader: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#527589',
+    marginBottom: 10,
+  },
+
+  activityBox: {
     backgroundColor: '#F8FCFE',
     padding: 15,
     borderRadius: 12,
     marginBottom: 12,
   },
 
-  subject: {
+  subjectLabel: {
     fontSize: 15,
     fontWeight: 'bold',
     color: '#527589',
     marginBottom: 5,
   },
 
-  titleText: {
+  taskTitle: {
     fontSize: 14,
     color: '#8A9DA8',
     marginBottom: 12,
+  },
+
+  deadline: {
+    fontSize: 14,
+    color: '#8A9DA8',
+    marginBottom: 10,
   },
 
   statusButton: {
@@ -222,4 +361,5 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+
 });

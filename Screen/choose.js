@@ -18,13 +18,14 @@ export default function Choose({ navigation }) { // makes task menu
 
       <View style={styles.taskBox}>
 
+        {/* open the "Enter Task" */}
         <TouchableOpacity
           style={styles.option}
-          onPress={() => navigation.navigate('Enter Task')} // open the "Enter Task"
+          onPress={() => navigation.navigate('Enter Task')} 
         >
-
+           {/* // display image (its location) */}
           <Image
-            source={require('../assets/add.png')} // display image (its location)
+            source={require('../assets/add.png')} 
             style={styles.icon}
           />
 
@@ -34,14 +35,16 @@ export default function Choose({ navigation }) { // makes task menu
 
         </TouchableOpacity>
 
-
+        
+        {/* // open the "My Task" */}
         <TouchableOpacity
           style={styles.option}
-          onPress={() => navigation.navigate('My Tasks')} // open the "My Task"
+          onPress={() => navigation.navigate('My Tasks')} 
         >
-
+          
+        {/* // display image (its location) */}  
           <Image
-            source={require('../assets/view.png')} // display image (its location)
+            source={require('../assets/view.png')} 
             style={styles.icon}
           />
 
@@ -51,14 +54,14 @@ export default function Choose({ navigation }) { // makes task menu
 
         </TouchableOpacity>
 
-
+        {/* // open the "Status" */}
         <TouchableOpacity
           style={styles.option}
-          onPress={() => navigation.navigate('Status')} // open the "Status"
+          onPress={() => navigation.navigate('Status')} 
         >
-
+          {/* // display image (its location) */}  
           <Image
-            source={require('../assets/completed.png')} // display image (its location)
+            source={require('../assets/completed.png')} 
             style={styles.icon}
           />
 

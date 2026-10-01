@@ -1,59 +1,97 @@
 import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
+  StyleSheet, // CSS
+  View, // responsible for what you see in the app
+  Text, // the text
+  TouchableOpacity, // the buttons
 } from 'react-native';
 
 export default function StatusUpdate({ navigation }) {
+
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <View style={styles.taskBox}>
 
-          <Text style={styles.title}>TASK STATUS</Text>
-          <View style={styles.line} />
+    <View style={styles.container}>
 
-          <Text style={styles.sectionHeader}>Pending Activities</Text>
+      <View style={styles.taskBox}>
 
-          <View style={styles.activityBox}>
-            <Text style={styles.subjectLabel}>Subject: Mobile Programming</Text>
-            <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
-            <Text style={styles.deadline}>Deadline: December 5, 2026</Text>
-          </View>
+        <Text style={styles.title}>TASK STATUS</Text>
 
-          <Text style={styles.sectionHeader}>Completed Activities</Text>
+        <View style={styles.line} />
 
-          <View style={styles.activityBox}>
-            <Text style={styles.subjectLabel}>Subject: Mobile Programming</Text>
-            <Text style={styles.taskTitle}>Title: First Mobile App</Text>
-            <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
-          </View>
+        <Text style={styles.sectionHeader}>Pending Activities</Text>
 
-          <View style={styles.activityBox}>
-            <Text style={styles.subjectLabel}>Subject: Reading Visual Art</Text>
-            <Text style={styles.taskTitle}>Title: Learning Application</Text>
-            <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
-          </View>
+        <View style={styles.activityBox}>
 
-          <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('Status Update')}>
-            <Text style={styles.editButtonText}>EDIT</Text>
-          </TouchableOpacity>
+          <Text style={styles.subjectLabel}>
+            Subject: Mobile Programming
+          </Text>
+
+          <Text style={styles.taskTitle}>
+            Title: Second Mobile App
+          </Text>
+
+          <Text style={styles.deadline}>
+            Deadline: December 5, 2026
+          </Text>
 
         </View>
 
+        <Text style={styles.sectionHeader}>Completed Activities</Text>
+
+        <View style={styles.activityBox}>
+
+          <Text style={styles.subjectLabel}>
+            Subject: Mobile Programming
+          </Text>
+
+          <Text style={styles.taskTitle}>
+            Title: First Mobile App
+          </Text>
+
+          <Text style={styles.deadline}>
+            Deadline: September 30, 2026
+          </Text>
+
+        </View>
+
+        <View style={styles.activityBox}>
+
+          <Text style={styles.subjectLabel}>
+            Subject: Reading Visual Art
+          </Text>
+
+          <Text style={styles.taskTitle}>
+            Title: Learning Application
+          </Text>
+
+          <Text style={styles.deadline}>
+            Deadline: September 30, 2026
+          </Text>
+
+        </View>
+
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => navigation.navigate('Status Update')}
+        >
+
+          <Text style={styles.editButtonText}>EDIT</Text>
+
+        </TouchableOpacity>
+
       </View>
-    </ScrollView>
+
+    </View>
+
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     alignItems: 'center',
     padding: 15,
-    backgroundColor:'#D5E8F0',
+    backgroundColor: '#D5E8F0',
   },
 
   taskBox: {
