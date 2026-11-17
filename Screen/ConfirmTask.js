@@ -1,137 +1,101 @@
+import { useMemo } from 'react';
 import {
   StyleSheet, // allows customized design
   View, // holds the entire page
   Text, // displays text
-  TouchableOpacity, // allows buttons to be clickable
 } from 'react-native';
 
-export default function ConfirmTask({ navigation }) { // creates the ConfirmTask screen
+import { fonts, useTheme } from '../theme/ThemeContext';
+import ScreenContainer from '../components/ScreenContainer';
+import ScreenTitle from '../components/ScreenTitle';
+import AppButton from '../components/AppButton';
+
+// One detail row: small muted label on top, value below.
+function Detail({ label, value }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
 
   return (
-  <View style={styles.container}>
-    <View style={styles.taskBox}>
-      <Text style={styles.title}>CONFIRM TASK</Text>
-      <View style={styles.line} />
-
-      <Text style={styles.taskTitle}>Title: First Mobile App</Text>
-      <Text style={styles.subject}>Subject: Mobile Programming</Text>
-      <Text style={styles.subject}>Activity Type: MCO 1</Text>
-
-      <Text style={styles.description}>
-        Description: Create a Static Mobile App
-      </Text>
-
-      <Text style={styles.deadline}>
-        Deadline: September 30, 2026
-      </Text>
-
-      <TouchableOpacity
-        style={styles.saveButton}
-        onPress={() => navigation.navigate('My Tasks')}
-      >
-        <Text style={styles.saveButtonText}>SAVE TASK</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.cancelButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.cancelButtonText}>CANCEL</Text>
-      </TouchableOpacity>
+    <View style={styles.detail}>
+      <Text style={styles.detailLabel}>{label}</Text>
+      <Text style={styles.detailValue}>{value}</Text>
     </View>
   </View>
 );
 }
 
-const styles = StyleSheet.create({
+export default function ConfirmTask({ navigation }) { // creates the ConfirmTask screen
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
 
-  container: {
-    flex: 1,
-    backgroundColor: '#D5E8F0',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: 20,
-  },
+  return (
+    <ScreenContainer> {/* holds the entire page */}
+      <View style={styles.taskBox}> {/* holds the task details */}
 
-  taskBox: {
-    width: '100%',
-    padding: 25,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#C7E0EA',
-    borderRadius: 22,
-    marginTop: 10,
-  },
+        <ScreenTitle title="CONFIRM TASK" /> {/* displays the page title */}
 
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#527589',
-    textAlign: 'center',
-  },
+        <Text style={styles.taskTitle}>First Mobile App</Text> {/* displays the task title */}
 
-  line: {
-    width: '100%',
-    height: 1,
-    backgroundColor: '#C7E0EA',
-    marginTop: 15,
-    marginBottom: 20,
-  },
+        <Detail label="Subject" value="Mobile Programming" /> {/* displays the subject */}
+        <Detail label="Activity Type" value="MCO 1" /> {/* displays the activity type */}
+        <Detail label="Description" value="Create a Static Mobile App" /> {/* displays the description */}
+        <Detail label="Deadline" value="September 30, 2026" /> {/* displays the deadline */}
 
-  taskTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#527589',
-    marginBottom: 8,
-  },
+        <View style={styles.buttons}>
+          <AppButton title="SAVE TASK" onPress={() => navigation.navigate('My Tasks')} /> {/* navigates to the My Tasks screen */}
+          <View style={styles.gap} />
+          <AppButton title="CANCEL" variant="ghost" onPress={() => navigation.goBack()} /> {/* goes back to the previous screen */}
+        </View>
 
-  subject: {
-    fontSize: 16,
-    color: '#527589',
-    marginBottom: 6,
-  },
+      </View>
+    </ScreenContainer>
+  );
+}
 
-  description: {
-    fontSize: 16,
-    color: '#527589',
-    marginBottom: 6,
-  },
+const makeStyles = (colors) =>
+  StyleSheet.create({
+    taskBox: {
+      width: '100%',
+      padding: 24,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 18,
+    },
 
-  deadline: {
-    fontSize: 16,
-    color: '#527589',
-    marginBottom: 15,
-  },
+    taskTitle: {
+      fontFamily: fonts.semiBold,
+      fontSize: 20,
+      color: colors.gold,
+      marginBottom: 14,
+    },
 
-  saveButton: {
-    width: '100%',
-    backgroundColor: '#8ABDD3',
-    paddingVertical: 13,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
+    detail: {
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 14,
+      marginBottom: 10,
+    },
 
-  saveButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+    detailLabel: {
+      fontFamily: fonts.medium,
+      fontSize: 12,
+      color: colors.muted,
+      marginBottom: 2,
+    },
 
-  cancelButton: {
-    width: '100%',
-    backgroundColor: '#F1F8FB',
-    borderWidth: 1,
-    borderColor: '#B8D5E1',
-    paddingVertical: 13,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
+    detailValue: {
+      fontFamily: fonts.regular,
+      fontSize: 15,
+      color: colors.text,
+    },
 
-  cancelButtonText: {
-    color: '#527589',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+    buttons: {
+      marginTop: 10,
+    },
 
-});
+    gap: {
+      height: 10,
+    },
+  });

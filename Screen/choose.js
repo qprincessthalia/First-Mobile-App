@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   StyleSheet, // help style the page
   View, // hold parts of page
@@ -6,131 +7,118 @@ import {
   Image, // display images
 } from 'react-native';
 
+import { fonts, useTheme } from '../theme/ThemeContext';
+import ScreenContainer from '../components/ScreenContainer';
+import ScreenTitle from '../components/ScreenTitle';
+
 export default function Choose({ navigation }) { // makes task menu
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
 
   return (
-    <View style={styles.container}> 
-      {/* Holds the whole page */}
+    <ScreenContainer> {/* Holds the whole page */}
 
-      <Text style={styles.title}>MY TASK</Text>
-
-      <View style={styles.line} />
+      <ScreenTitle title="MY TASK" />
 
       <View style={styles.taskBox}>
 
         {/* open the "Enter Task" */}
         <TouchableOpacity
           style={styles.option}
-          onPress={() => navigation.navigate('Enter Task')} 
+          activeOpacity={0.85}
+          onPress={() => navigation.navigate('Enter Task')} // open the "Enter Task"
         >
-           {/* // display image (its location) */}
-          <Image
-            source={require('../assets/add.png')} 
-            style={styles.icon}
-          />
-
-          <Text style={styles.optionText}>
-            Add New Task
-          </Text>
-
+          <View style={styles.iconWrap}>
+            <Image
+              source={require('../assets/add.png')} // display image (its location)
+              style={styles.icon}
+            />
+          </View>
+          <Text style={styles.optionText}>Add New Task</Text>
         </TouchableOpacity>
 
-        
-        {/* // open the "My Task" */}
         <TouchableOpacity
           style={styles.option}
-          onPress={() => navigation.navigate('My Tasks')} 
+          activeOpacity={0.85}
+          onPress={() => navigation.navigate('My Tasks')} // open the "My Task"
         >
-          
-        {/* // display image (its location) */}  
-          <Image
-            source={require('../assets/view.png')} 
-            style={styles.icon}
-          />
-
-          <Text style={styles.optionText}>
-            My Tasks
-          </Text>
-
+          <View style={styles.iconWrap}>
+            <Image
+              source={require('../assets/view.png')} // display image (its location)
+              style={styles.icon}
+            />
+          </View>
+          <Text style={styles.optionText}>My Tasks</Text>
         </TouchableOpacity>
 
-        {/* // open the "Status" */}
         <TouchableOpacity
-          style={styles.option}
-          onPress={() => navigation.navigate('Status')} 
+          style={[styles.option, styles.lastOption]}
+          activeOpacity={0.85}
+          onPress={() => navigation.navigate('Status')} // open the "Status"
         >
-          {/* // display image (its location) */}  
-          <Image
-            source={require('../assets/completed.png')} 
-            style={styles.icon}
-          />
-
-          <Text style={styles.optionText}>
-            Status
-          </Text>
-
+          <View style={styles.iconWrap}>
+            <Image
+              source={require('../assets/completed.png')} // display image (its location)
+              style={styles.icon}
+            />
+          </View>
+          <Text style={styles.optionText}>Status</Text>
         </TouchableOpacity>
 
       </View>
-    </View>
+    </ScreenContainer>
   );
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) =>
+  StyleSheet.create({
+    taskBox: {
+      width: '100%',
+      padding: 20,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 16,
+      backgroundColor: colors.surface,
+    },
 
-  container: {
-    flex: 1,
-    backgroundColor: '#D5E8F0',
-    padding: 20,
-  },
+    option: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+      padding: 14,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 12,
+      marginBottom: 12,
+      backgroundColor: colors.surfaceAlt,
+    },
 
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#527589',
-    textAlign: 'center',
-  },
+    lastOption: {
+      marginBottom: 0,
+    },
 
-  line: {
-    height: 1,
-    backgroundColor: '#527589',
-    marginVertical: 15,
-  },
+    // Light circle behind each icon so dark icons stay visible in dark mode.
+    iconWrap: {
+      width: 46,
+      height: 46,
+      borderRadius: 23,
+      backgroundColor: colors.iconBg,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 15,
+    },
 
-  taskBox: {
-    width: '100%',
-    padding: 20,
-    borderWidth: 1,
-    borderColor: '#B8D5E1',
-    borderRadius: 15,
-    backgroundColor: '#FFFFFF',
-  },
+    icon: {
+      width: 28,
+      height: 28,
+    },
 
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    padding: 14,
-    borderWidth: 1,
-    borderColor: '#B8D5E1',
-    borderRadius: 10,
-    marginBottom: 12,
-    backgroundColor: '#F8FBFC',
-  },
-
-  icon: {
-    width: 30,
-    height: 30,
-    marginRight: 15,
-  },
-
-  optionText: {
-    fontSize: 16,
-    color: '#527589',
-    fontWeight: 'bold',
-  },
-
-});
+    optionText: {
+      fontFamily: fonts.semiBold,
+      fontSize: 16,
+      color: colors.text,
+    },
+  });
 // components used : StyleSheet
 //View
 //Text

@@ -1,111 +1,169 @@
+import { useMemo, useState } from 'react';
 import {
   StyleSheet, // for styling
   View, // hold the part of the page
   Text, // display text
-  TextInput, //where you can type
-  TouchableOpacity, // make the buttons clickable
+  TextInput, // where you can type
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
 } from 'react-native';
 
-export default function LogIn({ navigation }) { // makes the login page
+import { fonts, useTheme } from '../theme/ThemeContext';
+import AppButton from '../components/AppButton';
+
+// Label + text box. Highlights the border in blue while the user is typing.
+function Field({ label, ...inputProps }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
+  const [focused, setFocused] = useState(false);
+
   return (
-  <View style={styles.container}>
-
-    <Text style={styles.title}>STUDENT LOGIN</Text>
-    <View style={styles.line} />
-
-    <View style={styles.loginBox}>
-  <Text style={styles.label}>Student Number</Text>
-
-  <TextInput
-    style={styles.input}
-    placeholder="Enter Student Number"
-    placeholderTextColor="#abbac2"
-  />
-
-  <Text style={styles.label}>Student Password</Text>
-
-  <TextInput
-    style={styles.input}
-    placeholder="Enter Password"
-    placeholderTextColor="#abbac2"
-  />
-
-  <Text style={styles.label}>Student Username</Text>
-
-  <TextInput
-    style={styles.input}
-    placeholder="Enter Preferred Username"
-    placeholderTextColor="#abbac2"
-  />
-
-  <TouchableOpacity
-    style={styles.button}
-    onPress={() => navigation.navigate('Activity')}
-  >
-    <Text style={styles.buttonText}>LOG IN</Text>
-  </TouchableOpacity>
-</View>
-
-  </View>
-);
+    <View style={styles.field}>
+      <Text style={styles.label}>{label}</Text>
+      <TextInput
+        style={[styles.input, focused && styles.inputFocused]}
+        placeholderTextColor={colors.muted}
+        autoCapitalize="none"
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        {...inputProps}
+      />
+    </View>
+  );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#D5E8F0',
-    padding: 20,
-  },
+export default function LogIn({ navigation }) { // makes the login page
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
 
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#527589',
-    textAlign: 'center',
-  },
+  return (
+    <KeyboardAvoidingView
+      style={styles.flex}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.eyebrow}>STUDENT PORTAL</Text>
+          <Text style={styles.title}>Student Login</Text>
+          <View style={styles.goldLine} />
+          <Text style={styles.subtitle}>Sign in to manage your tasks</Text>
+        </View>
 
-  line: {
-    height: 1,
-    backgroundColor: '#527589',
-    marginVertical: 15,
-  },
+        {/* Form card */}
+        <View style={styles.card}>
+          <Field
+            label="Student Number"
+            placeholder="Enter student number"
+            keyboardType="number-pad"
+          />
 
-  loginBox: {
-    width: '100%',
-    padding: 20,
-    borderWidth: 1,
-    borderColor: '#B8D5E1',
-    borderRadius: 15,
-    backgroundColor: '#FFFFFF',
-  },
+          <Field
+            label="Student Password"
+            placeholder="Enter password"
+            secureTextEntry
+          />
 
-  label: {
-    fontSize: 16,
-    color: '#527589',
-    marginBottom: 5,
-  },
+          <Field
+            label="Student Username"
+            placeholder="Enter preferred username"
+          />
 
-  input: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#B8D5E1',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 15,
-    backgroundColor: '#F8FBFC',
-  },
+          <AppButton title="LOG IN" onPress={() => navigation.navigate('Activity')} /> {/* goes to activity page */}
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+}
 
-  button: {
-    backgroundColor: '#8ABDD3',
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 5,
-  },
+const makeStyles = (colors) =>
+  StyleSheet.create({
+    flex: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  buttonText: {
-    color: '#527589',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
-});
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+
+    content: {
+      flexGrow: 1,
+      padding: 24,
+    },
+
+    header: {
+      marginTop: 12,
+      marginBottom: 28,
+    },
+
+    eyebrow: {
+      fontFamily: fonts.semiBold,
+      fontSize: 12,
+      letterSpacing: 2,
+      color: colors.gold,
+      marginBottom: 6,
+    },
+
+    title: {
+      fontFamily: fonts.bold,
+      fontSize: 30,
+      color: colors.text,
+    },
+
+    goldLine: {
+      width: 48,
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: colors.gold,
+      marginTop: 10,
+      marginBottom: 12,
+    },
+
+    subtitle: {
+      fontFamily: fonts.regular,
+      fontSize: 15,
+      color: colors.muted,
+    },
+
+    card: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: 24,
+    },
+
+    field: {
+      marginBottom: 20,
+    },
+
+    label: {
+      fontFamily: fonts.medium,
+      fontSize: 14,
+      color: colors.muted,
+      marginBottom: 8,
+    },
+
+    input: {
+      fontFamily: fonts.regular,
+      backgroundColor: colors.surfaceAlt,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+      fontSize: 15,
+      color: colors.text,
+    },
+
+    inputFocused: {
+      borderColor: colors.primary,
+    },
+  });

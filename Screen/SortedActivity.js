@@ -1,29 +1,47 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   StyleSheet, // allow customized design
   View, // hold the entire page
   Text, // display text
   TouchableOpacity, // allow buttons to be clickable
-  ScrollView, // allows the page to be scrollable
 } from 'react-native';
 
+import { fonts, useTheme } from '../theme/ThemeContext';
+import ScreenContainer from '../components/ScreenContainer';
+import ScreenTitle from '../components/ScreenTitle';
+
 export default function SortedActivity() { // create sorted activity screen
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
+
   const [sortBy, setSortBy] = useState(''); // stores the selected sorting option
 
   return (
-  <View style={styles.container}>
-    <View style={styles.taskBox}>
-      <Text style={styles.title}>SORTED ACTIVITIES</Text>
+    <ScreenContainer> {/* makes the page scrollable */}
+      <View style={styles.taskBox}>{/* holds the sorted activities */}
+        <ScreenTitle title="SORTED ACTIVITIES" />
 
-      <View style={styles.line} />
+        <View style={styles.buttonRow}>
+          <TouchableOpacity
+            style={[styles.button, sortBy === 'subject' && styles.activeButton]}
+            activeOpacity={0.85}
+            onPress={() => setSortBy('subject')} // sets sorting to subject
+          >
+            <Text style={[styles.buttonText, sortBy === 'subject' && styles.activeButtonText]}>
+              Sort by Subject
+            </Text>
+          </TouchableOpacity>
 
-      <View style={styles.buttonRow}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => setSortBy('subject')}
-        >
-          <Text style={styles.buttonText}>Sort by Subject</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, sortBy === 'deadline' && styles.activeButton]}
+            activeOpacity={0.85}
+            onPress={() => setSortBy('deadline')} // sets sorting to deadline
+          >
+            <Text style={[styles.buttonText, sortBy === 'deadline' && styles.activeButtonText]}>
+              Sort by Deadline
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity
           style={styles.button}
@@ -33,232 +51,173 @@ export default function SortedActivity() { // create sorted activity screen
         </TouchableOpacity>
       </View>
 
-      {sortBy === 'subject' && (
-        <View>
-          <View style={styles.subjectBox}>
-            <Text style={styles.subjectTitle}>
-              Subject: Mobile Programming
-            </Text>
+            <View style={styles.subjectBox}>
+              <Text style={styles.subjectTitle}>Mobile Programming</Text>
 
-            <View style={styles.activityBox}>
-              <Text style={styles.taskTitle}>
-                Title: First Mobile App
-              </Text>
+              {/* first activity */}
+              <View style={styles.activityBox}>
+                <Text style={styles.taskTitle}>First Mobile App</Text>
+                <Text style={styles.text}>Activity Type: MCO1</Text>
+                <Text style={styles.text}>Deadline: September 30, 2026</Text>
+              </View>
 
-              <Text style={styles.text}>
-                Activity Type: MCO 1
-              </Text>
-
-              <Text style={styles.text}>
-                Deadline: September 30, 2026
-              </Text>
+              {/* second activity */}
+              <View style={styles.activityBox}>
+                <Text style={styles.taskTitle}>Second Mobile App</Text>
+                <Text style={styles.text}>Activity Type: MCO2</Text>
+                <Text style={styles.text}>Deadline: December 5, 2026</Text>
+              </View>
             </View>
 
-            <View style={styles.activityBox}>
-              <Text style={styles.taskTitle}>
-                Title: Second Mobile App
-              </Text>
+            <View style={styles.subjectBox}>
+              <Text style={styles.subjectTitle}>Reading Visual Art</Text>
 
-              <Text style={styles.text}>
-                Activity Type: MCO 2
-              </Text>
+              {/* third activity */}
+              <View style={styles.activityBox}>
+                <Text style={styles.taskTitle}>Learning Application</Text>
+                <Text style={styles.text}>Activity Type: MCO1</Text>
+                <Text style={styles.text}>Description: Analyze 5 Filipino artwork</Text>
+                <Text style={styles.text}>Deadline: September 30, 2026</Text>
+              </View>
+            </View>
 
-              <Text style={styles.text}>
-                Deadline: December 5, 2026
-              </Text>
+          </View>
+        )}
+
+        {/* displays the activities sorted by deadline */}
+        {sortBy === 'deadline' && (
+          <View>
+
+            {/* first activity */}
+            <View style={styles.deadlineBox}>
+              <Text style={styles.taskTitle}>First Mobile App</Text>
+              <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
+              <Text style={styles.subject}>Subject: Mobile Programming</Text>
+            </View>
+
+            {/* second activity */}
+            <View style={styles.deadlineBox}>
+              <Text style={styles.taskTitle}>Learning Application</Text>
+              <Text style={styles.deadline}>Deadline: September 30, 2026</Text>
+              <Text style={styles.subject}>Subject: Reading Visual Art</Text>
+            </View>
+
+            {/* third activity */}
+            <View style={styles.deadlineBox}>
+              <Text style={styles.taskTitle}>Second Mobile App</Text>
+              <Text style={styles.deadline}>Deadline: December 5, 2026</Text>
+              <Text style={styles.subject}>Subject: Mobile Programming</Text>
             </View>
           </View>
 
-          <View style={styles.subjectBox}>
-            <Text style={styles.subjectTitle}>
-              Subject: Reading Visual Art
-            </Text>
-
-            <View style={styles.activityBox}>
-              <Text style={styles.taskTitle}>
-                Title: Learning Application
-              </Text>
-
-              <Text style={styles.text}>
-                Activity Type: MCO 1
-              </Text>
-
-              <Text style={styles.text}>
-                Description: Analyze 5 Filipino artwork
-              </Text>
-
-              <Text style={styles.text}>
-                Deadline: September 30, 2026
-              </Text>
-            </View>
-          </View>
-        </View>
-      )}
-
-      {sortBy === 'deadline' && (
-        <View>
-          <View style={styles.deadlineBox}>
-            <Text style={styles.taskTitle}>
-              Title: First Mobile App
-            </Text>
-
-            <Text style={styles.deadline}>
-              Deadline: September 30, 2026
-            </Text>
-
-            <Text style={styles.subject}>
-              Subject: Mobile Programming
-            </Text>
-          </View>
-
-          <View style={styles.deadlineBox}>
-            <Text style={styles.taskTitle}>
-              Title: Learning Application
-            </Text>
-
-            <Text style={styles.deadline}>
-              Deadline: September 30, 2026
-            </Text>
-
-            <Text style={styles.subject}>
-              Subject: Reading Visual Art
-            </Text>
-          </View>
-
-          <View style={styles.deadlineBox}>
-            <Text style={styles.taskTitle}>
-              Title: Second Mobile App
-            </Text>
-
-            <Text style={styles.deadline}>
-              Deadline: December 5, 2026
-            </Text>
-
-            <Text style={styles.subject}>
-              Subject: Mobile Programming
-            </Text>
-          </View>
-        </View>
-      )}
-    </View>
-  </View>
-);
+      </View>
+    </ScreenContainer>
+  );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#D5E8F0',
-  },
+const makeStyles = (colors) =>
+  StyleSheet.create({
+    taskBox: {
+      width: '100%',
+      padding: 22,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 18,
+    },
 
-  content: {
-    padding: 20,
-  },
+    buttonRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 20,
+    },
 
-  taskBox: {
-    width: '100%',
-    padding: 25,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#C7E0EA',
-    borderRadius: 22,
-  },
+    button: {
+      width: '48%',
+      backgroundColor: 'transparent',
+      borderWidth: 1.5,
+      borderColor: colors.border,
+      paddingVertical: 12,
+      borderRadius: 10,
+      alignItems: 'center',
+    },
 
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#527589',
-    textAlign: 'center',
-  },
+    activeButton: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
 
-  line: {
-    height: 1,
-    backgroundColor: '#C7E0EA',
-    marginTop: 15,
-    marginBottom: 20,
-  },
+    buttonText: {
+      fontFamily: fonts.semiBold,
+      color: colors.muted,
+      fontSize: 13,
+    },
 
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
+    activeButtonText: {
+      color: colors.onPrimary,
+    },
 
-  button: {
-    width: '48%',
-    backgroundColor: '#8ABDD3',
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
+    subjectBox: {
+      width: '100%',
+      padding: 15,
+      backgroundColor: colors.surfaceAlt,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 12,
+      marginBottom: 15,
+    },
 
-  activeButton: {
-    backgroundColor: '#527589',
-  },
+    subjectTitle: {
+      fontFamily: fonts.semiBold,
+      fontSize: 16,
+      color: colors.gold,
+      marginBottom: 10,
+    },
 
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
+    activityBox: {
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      paddingTop: 12,
+      marginTop: 5,
+      marginBottom: 10,
+    },
 
-  subjectBox: {
-    width: '100%',
-    padding: 15,
-    backgroundColor: '#F8FCFE',
-    borderWidth: 1,
-    borderColor: '#B8D5E1',
-    borderRadius: 12,
-    marginBottom: 15,
-  },
+    taskTitle: {
+      fontFamily: fonts.semiBold,
+      fontSize: 16,
+      color: colors.text,
+      marginBottom: 6,
+    },
 
-  subjectTitle: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: '#527589',
-    marginBottom: 10,
-  },
+    text: {
+      fontFamily: fonts.regular,
+      fontSize: 14,
+      color: colors.muted,
+      marginBottom: 4,
+    },
 
-  activityBox: {
-    borderTopWidth: 1,
-    borderTopColor: '#C7E0EA',
-    paddingTop: 12,
-    marginTop: 5,
-    marginBottom: 10,
-  },
+    deadlineBox: {
+      width: '100%',
+      padding: 15,
+      backgroundColor: colors.surfaceAlt,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderLeftWidth: 4,
+      borderLeftColor: colors.primary,
+      borderRadius: 12,
+      marginBottom: 15,
+    },
 
-  taskTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#527589',
-    marginBottom: 7,
-  },
+    deadline: {
+      fontFamily: fonts.medium,
+      fontSize: 14,
+      color: colors.gold,
+      marginBottom: 4,
+    },
 
-  text: {
-    fontSize: 14,
-    color: '#527589',
-    marginBottom: 5,
-  },
-
-  deadlineBox: {
-    width: '100%',
-    padding: 15,
-    backgroundColor: '#F8FCFE',
-    borderWidth: 1,
-    borderColor: '#B8D5E1',
-    borderRadius: 12,
-    marginBottom: 15,
-  },
-
-  deadline: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#527589',
-    marginBottom: 5,
-  },
-
-  subject: {
-    fontSize: 14,
-    color: '#527589',
-  },
-});
+    subject: {
+      fontFamily: fonts.regular,
+      fontSize: 14,
+      color: colors.muted,
+    },
+  });

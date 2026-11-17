@@ -1,161 +1,121 @@
+import { useMemo } from 'react';
 import {
   StyleSheet, // design the app
   View, // hold the entire page
   Text, // display text
-  TouchableOpacity, // allows buttons to be clickable
 } from 'react-native';
 
-export default function MyTask({ navigation }) { // create the my task screen
+import { fonts, useTheme } from '../theme/ThemeContext';
+import ScreenContainer from '../components/ScreenContainer';
+import ScreenTitle from '../components/ScreenTitle';
+import AppButton from '../components/AppButton';
+
+// One line inside a task card: muted label + value.
+function Info({ label, value }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.taskBox}>
-        <Text style={styles.title}>MY TASKS</Text>
-
-        <View style={styles.line} />
-
-        <View style={styles.activityBox}>
-          <Text style={styles.taskTitle}>Title: First Mobile App</Text>
-          <Text style={styles.subject}>Subject: Mobile Programming</Text>
-          <Text style={styles.activityType}>Activity Type: MCO 1</Text>
-          <Text style={styles.description}>
-            Description: Create a Static Mobile App
-          </Text>
-          <Text style={styles.deadline}>
-            Deadline: September 30, 2026
-          </Text>
-        </View>
-
-        <View style={styles.activityBox}>
-          <Text style={styles.taskTitle}>Title: Second Mobile App</Text>
-          <Text style={styles.subject}>Subject: Mobile Programming</Text>
-          <Text style={styles.activityType}>Activity Type: MCO 2</Text>
-          <Text style={styles.deadline}>
-            Deadline: December 5, 2026
-          </Text>
-        </View>
-
-        <View style={styles.activityBox}>
-          <Text style={styles.taskTitle}>Title: Learning Application</Text>
-          <Text style={styles.subject}>Subject: Reading Visual Art</Text>
-          <Text style={styles.activityType}>Activity Type: MCO 1</Text>
-          <Text style={styles.description}>
-            Description: Analyze 5 Filipino artwork
-          </Text>
-          <Text style={styles.deadline}>
-            Deadline: September 30, 2026
-          </Text>
-        </View>
-
-        <View style={styles.buttonRow}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('Enter Task')}
-          >
-            <Text style={styles.buttonText}>ADD TASK</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('Sorted Activity')}
-          >
-            <Text style={styles.buttonText}>SORT</Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
+    <View style={styles.infoRow}>
+      <Text style={styles.infoLabel}>{label}</Text>
+      <Text style={styles.infoValue}>{value}</Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+export default function MyTask({ navigation }) { // create the my task screen
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
 
-  container: {
-    flex: 1,
-    backgroundColor: '#D5E8F0',
-    padding: 20,
-  },
+  return (
+    <ScreenContainer> {/* hold the entire screen */}
+      <ScreenTitle title="MY TASKS" />
 
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#527589',
-    textAlign: 'center',
-  },
+      <View style={styles.taskBox}> {/* hold the first task */}
+        <Text style={styles.taskTitle}>First Mobile App</Text>
+        <Info label="Subject" value="Mobile Programming" />
+        <Info label="Activity Type" value="MCO1" />
+        <Info label="Description" value="Create a Static Mobile App" />
+        <Info label="Deadline" value="September 30, 2026" />
+      </View>
 
-  line: {
-    height: 1,
-    backgroundColor: '#527589',
-    marginVertical: 15,
-  },
+      <View style={styles.taskBox}> {/* hold the second task */}
+        <Text style={styles.taskTitle}>Second Mobile App</Text>
+        <Info label="Subject" value="Mobile Programming" />
+        <Info label="Activity Type" value="MCO2" />
+        <Info label="Description" value="Create a Dynamic Mobile App" />
+        <Info label="Deadline" value="December 5, 2026" />
+      </View>
 
-  taskBox: {
-    width: '100%',
-    padding: 20,
-    borderWidth: 1,
-    borderColor: '#B8D5E1',
-    borderRadius: 15,
-    marginBottom: 10,
-    backgroundColor: '#FFFFFF',
-  },
+      <View style={styles.taskBox}> {/* hold the third task */}
+        <Text style={styles.taskTitle}>Learning Application</Text>
+        <Info label="Subject" value="Reading Visual Art" />
+        <Info label="Activity Type" value="MCO1" />
+        <Info label="Description" value="Analyze 5 Filipino Artwork" />
+        <Info label="Deadline" value="Sept 30, 2026" />
+      </View>
 
-  activityBox: {
-    backgroundColor: '#F8FCFE',
-    borderWidth: 1,
-    borderColor: '#C7E0EA',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 12,
-  },
+      <View style={styles.buttonRow}> {/* holds the buttons in one row */}
+        <AppButton
+          title="ADD TASK"
+          style={styles.half}
+          onPress={() => navigation.navigate('Enter Task')}
+        />
+        <AppButton
+          title="SORT ACTIVITY"
+          variant="outline"
+          style={styles.half}
+          onPress={() => navigation.navigate('Sorted Activity')}
+        />
+      </View>
+    </ScreenContainer>
+  );
+}
 
-  taskTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#527589',
-    marginBottom: 8,
-  },
+const makeStyles = (colors) =>
+  StyleSheet.create({
+    taskBox: {
+      width: '100%',
+      padding: 18,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderLeftWidth: 4,
+      borderLeftColor: colors.primary,
+      borderRadius: 14,
+      marginBottom: 12,
+      backgroundColor: colors.surface,
+    },
 
-  subject: {
-    fontSize: 16,
-    color: '#527589',
-    marginBottom: 5,
-  },
+    taskTitle: {
+      fontFamily: fonts.semiBold,
+      fontSize: 18,
+      color: colors.gold,
+      marginBottom: 10,
+    },
 
-  activityType: {
-    fontSize: 16,
-    color: '#527589',
-    marginBottom: 5,
-  },
+    infoRow: {
+      marginBottom: 6,
+    },
 
-  description: {
-    fontSize: 16,
-    color: '#527589',
-    marginBottom: 5,
-  },
+    infoLabel: {
+      fontFamily: fonts.medium,
+      fontSize: 12,
+      color: colors.muted,
+    },
 
-  deadline: {
-    fontSize: 16,
-    color: '#527589',
-  },
+    infoValue: {
+      fontFamily: fonts.regular,
+      fontSize: 15,
+      color: colors.text,
+    },
 
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 5,
-  },
+    buttonRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 8,
+    },
 
-  button: {
-    backgroundColor: '#8ABDD3',
-    paddingVertical: 12,
-    width: '48%',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
-
-});
+    half: {
+      width: '48%',
+    },
+  });

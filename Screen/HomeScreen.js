@@ -1,19 +1,22 @@
+import { useMemo } from 'react';
 import {
   StyleSheet, // design page
   Text, // display text
   View, // hold the entire page
-  TouchableOpacity, // makes buttons clickable
   Image, // displays images
 } from 'react-native';
 
 import logo_pic from '../assets/task.png'; // get the app logo
 
+import { fonts, useTheme } from '../theme/ThemeContext';
+import AppButton from '../components/AppButton';
+
 export default function HomeScreen({ navigation }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => makeStyles(colors), [colors]);
 
   return (
-
-    <View style={styles.container}>
-      {/* holds the whole page */}
+    <View style={styles.container}> {/* holds the whole page */}
 
       <Image source={logo_pic} style={styles.logo} />
 
@@ -25,20 +28,11 @@ export default function HomeScreen({ navigation }) {
 
       </Text>
 
-      <Text style={styles.subtitle}>
-        Welcome to your Task and Assignment Planner!
-      </Text>
+      <View style={styles.goldLine} />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Start')}
-      >
-        {/* opens the start page */}
+      <Text style={styles.subtitle}>Welcome to your Task and Assignment Planner!</Text>
 
-        <Text style={styles.buttonText}>START</Text>
-        {/* button name */}
-
-      </TouchableOpacity>
+      <AppButton title="START" onPress={() => navigation.navigate('Start')} /> {/* open the start page */}
 
     </View>
 
@@ -46,65 +40,51 @@ export default function HomeScreen({ navigation }) {
 
 }
 
-const styles = StyleSheet.create({
+const makeStyles = (colors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 32,
+    },
 
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    logo: {
+      width: 110,
+      height: 110,
+      marginBottom: 12,
+    },
 
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
-  },
+    title: {
+      fontFamily: fonts.bold,
+      fontSize: 36,
+      textAlign: 'center',
+      letterSpacing: 1,
+    },
 
-  title: {
-    fontSize: 32,
-    fontWeight: '800',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
+    task: {
+      color: colors.text,
+    },
 
-  task: {
-    color: '#527589',
-  },
+    sphere: {
+      color: colors.gold,
+    },
 
-  sphere: {
-    color: '#8ABDD3',
-  },
+    goldLine: {
+      width: 48,
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: colors.gold,
+      marginTop: 10,
+      marginBottom: 16,
+    },
 
-  subtitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#8A9DA8',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-
-  button: {
-    backgroundColor: '#8ABDD3',
-    paddingVertical: 12,
-    paddingHorizontal: 100,
-    borderRadius: 10,
-  },
-
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '800',
-    textAlign: 'center',
-  },
-
-});
-
-// Components used:
-// StyleSheet – design page
-// Text – shows words
-// View – holds the page parts
-// TouchableOpacity – makes a clickable button
-// Image – shows the logo
-// HomeScreen – your home page component
-// navigation – moves to another page
+    subtitle: {
+      fontFamily: fonts.regular,
+      fontSize: 15,
+      color: colors.muted,
+      textAlign: 'center',
+      marginBottom: 32,
+    },
+  });

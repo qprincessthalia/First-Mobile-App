@@ -1,5 +1,17 @@
-import { NavigationContainer } from '@react-navigation/native'; // Handles the navigation of the whole app.
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'; // Handles the navigation of the whole app.
 import { createNativeStackNavigator } from '@react-navigation/native-stack'; // Creates a stack system that manages the order of screens.
+import { StatusBar } from 'expo-status-bar';
+import { useFonts } from 'expo-font';
+import { View } from 'react-native';
+import {
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_600SemiBold,
+  Poppins_700Bold,
+} from '@expo-google-fonts/poppins';
+
+import { ThemeProvider, useTheme, fonts } from './theme/ThemeContext';
+import ThemeToggle from './components/ThemeToggle';
 
 import HomeScreen from './Screen/HomeScreen';
 import LogIn from './Screen/LogIn';
@@ -12,101 +24,71 @@ import MenuBar from './Screen/MenuBar';
 import StatusUpdate from './Screen/StatusUpdate';
 import Status from './Screen/Status';
 
-const Stack = createNativeStackNavigator(); 
+const Stack = createNativeStackNavigator();
 // Creates the Stack Navigator that will manage the screens.
 
-export default function App() { 
+// All screens live here. It reads the current theme (light or dark).
+function AppNavigator() {
+  const { isDark, colors } = useTheme();
+
+  // Gives React Navigation the same colors as the app theme.
+  const base = isDark ? DarkTheme : DefaultTheme;
+  const navigationTheme = {
+    ...base,
+    colors: {
+      ...base.colors,
+      primary: colors.primary,
+      background: colors.background,
+      card: colors.surface,
+      text: colors.text,
+      border: colors.border,
+    },
+  };
+
+  // Shared look for every screen. The back arrow is hidden, and the
+  // header shows the theme button + the menu button on the right.
+  const screenOptions = ({ navigation }) => ({
+    headerBackVisible: false, // removes the arrow on the left
+    headerStyle: { backgroundColor: colors.surface },
+    headerTintColor: colors.text,
+    headerTitleStyle: { fontFamily: fonts.semiBold, fontSize: 18 },
+    headerShadowVisible: false,
+    contentStyle: { backgroundColor: colors.background },
+    headerRight: () => (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <ThemeToggle />
+        <MenuBar navigation={navigation} />
+      </View>
+    ),
+  });
+
+  // Screens that only show the theme button (no menu).
+  const themeOnly = { headerRight: () => <ThemeToggle /> };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme}>
 
-      <Stack.Navigator>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
 
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-        />
+      <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
 
-        <Stack.Screen
-          name="Start"
-          component={LogIn}
-        />
+        <Stack.Screen name="Home" component={HomeScreen} options={themeOnly} />
 
-        <Stack.Screen
-          name="Activity"
-          component={Choose}
-          options={({ navigation }) => ({
-            title: 'Activity',
-            headerRight: () => (
-              <MenuBar navigation={navigation} />
-            ),
-          })}
-        />
+        <Stack.Screen name="Start" component={LogIn} options={themeOnly} />
 
-        <Stack.Screen
-          name="Enter Task"
-          component={EnterTask}
-          options={({ navigation }) => ({
-            title: 'Enter Task',
-            headerRight: () => (
-              <MenuBar navigation={navigation} />
-            ),
-          })}
-        />
+        <Stack.Screen name="Activity" component={Choose} />
 
-        <Stack.Screen
-          name="Confirm Task"
-          component={ConfirmTask}
-          options={({ navigation }) => ({
-            title: 'Confirm Task',
-            headerRight: () => (
-              <MenuBar navigation={navigation} />
-            ),
-          })}
-        />
+        <Stack.Screen name="Enter Task" component={EnterTask} />
 
-        <Stack.Screen
-          name="My Tasks"
-          component={MyTask}
-          options={({ navigation }) => ({
-            title: 'My Tasks',
-            headerRight: () => (
-              <MenuBar navigation={navigation} />
-            ),
-          })}
-        />
+        <Stack.Screen name="Confirm Task" component={ConfirmTask} />
 
-        <Stack.Screen
-          name="Sorted Activity"
-          component={SortedActivity}
-          options={({ navigation }) => ({
-            title: 'Sorted Activity',
-            headerRight: () => (
-              <MenuBar navigation={navigation} />
-            ),
-          })}
-        />
+        <Stack.Screen name="My Tasks" component={MyTask} />
 
-        <Stack.Screen
-          name="Status Update"
-          component={StatusUpdate}
-          options={({ navigation }) => ({
-            title: 'Status Update',
-            headerRight: () => (
-              <MenuBar navigation={navigation} />
-            ),
-          })}
-        />
+        <Stack.Screen name="Sorted Activity" component={SortedActivity} />
 
-        <Stack.Screen
-          name="Status"
-          component={Status}
-          options={({ navigation }) => ({
-            title: 'Status',
-            headerRight: () => (
-              <MenuBar navigation={navigation} />
-            ),
-          })}
-        />
+        <Stack.Screen name="Status Update" component={StatusUpdate} />
+
+        <Stack.Screen name="Status" component={Status} />
 
       </Stack.Navigator>
 
@@ -114,8 +96,28 @@ export default function App() {
   );
 }
 
+export default function App() {
+  // Loads Poppins before showing any screen.
+  const [fontsLoaded] = useFonts({
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold,
+  });
 
-// ---- COMPONENTS: 
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return (
+    <ThemeProvider>
+      <AppNavigator />
+    </ThemeProvider>
+  );
+}
+
+
+// ---- COMPONENTS:
 //HomeScreen
 //LogIn
 //Choose
@@ -125,7 +127,7 @@ export default function App() {
 //SortedActivity
 //MenuBar
 //StatusUpdate
-//Status 
+//Status
 
 // -----React Navigation components — 3
 //NavigationContainer
