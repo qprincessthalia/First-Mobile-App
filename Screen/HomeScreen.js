@@ -16,28 +16,24 @@ export default function HomeScreen({ navigation }) {
   const styles = useMemo(() => makeStyles(colors), [colors]);
 
   return (
-    <View style={styles.container}> {/* holds the whole page */}
+    <View style={styles.container}>
+      {/* holds the whole page */}
 
       <Image source={logo_pic} style={styles.logo} />
 
       <Text style={styles.title}>
-
         <Text style={styles.task}>TASK</Text>
-
         <Text style={styles.sphere}>SPHERE</Text>
-
       </Text>
 
       <View style={styles.goldLine} />
 
       <Text style={styles.subtitle}>Welcome to your Task and Assignment Planner!</Text>
 
-      <AppButton title="START" onPress={() => navigation.navigate('Start')} /> {/* open the start page */}
-
+      {/* open the start page */}
+      <AppButton title="START" onPress={() => navigation.navigate('Start')} />
     </View>
-
   );
-
 }
 
 const makeStyles = (colors) =>

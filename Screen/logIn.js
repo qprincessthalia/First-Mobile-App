@@ -74,7 +74,8 @@ export default function LogIn({ navigation }) { // makes the login page
             placeholder="Enter preferred username"
           />
 
-          <AppButton title="LOG IN" onPress={() => navigation.navigate('Activity')} /> {/* goes to activity page */}
+          {/* goes to activity page */}
+          <AppButton title="LOG IN" onPress={() => navigation.navigate('Activity')} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

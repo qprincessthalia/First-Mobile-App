@@ -16,13 +16,13 @@ export default function Choose({ navigation }) { // makes task menu
   const styles = useMemo(() => makeStyles(colors), [colors]);
 
   return (
-    <ScreenContainer> {/* Holds the whole page */}
+    <ScreenContainer>
+      {/* Holds the whole page */}
 
       <ScreenTitle title="MY TASK" />
 
       <View style={styles.taskBox}>
 
-        {/* open the "Enter Task" */}
         <TouchableOpacity
           style={styles.option}
           activeOpacity={0.85}

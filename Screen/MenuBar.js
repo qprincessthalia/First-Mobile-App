@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from 'react';
 
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  Modal,
-  StyleSheet,
+  View, // hold entire page
+  Text, // display text
+  TouchableOpacity, // makes buttons clickable
+  StyleSheet, // allows to customize design
+  Modal, // allow a screen to appear to another screen
 } from 'react-native';
 
 import { fonts, useTheme } from '../theme/ThemeContext';
@@ -14,25 +14,29 @@ export default function MenuBar({ navigation }) { // create the menu bar
   const { colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // check if the menu is open
+
+  const closeMenu = () => {
+    setMenuOpen(false); // closes the menu
+  };
 
   return (
     <View>
+      {/* holds the menu button and modal */}
+
       <TouchableOpacity
         style={styles.menuButton}
         onPress={() => setMenuOpen(true)} // opens the menu when user clicked
       >
-        <Text style={styles.menuText}>☰</Text> {/* shows menu icon */}
+        <Text style={styles.menuText}>☰</Text>
       </TouchableOpacity>
 
       <Modal
         visible={menuOpen}
         transparent={true}
         animationType="fade"
-        onRequestClose={() => setMenuOpen(false)}
+        onRequestClose={closeMenu}
       >
-
-        {/* creates the menu popup */}
 
         <TouchableOpacity
           style={styles.overlay}
@@ -40,12 +44,13 @@ export default function MenuBar({ navigation }) { // create the menu bar
           onPress={closeMenu} // closes the menu when the outside area is pressed
         >
 
-          <View style={styles.menuBox}> {/* holds the menu options */}
+          <View style={styles.menuBox}>
+            {/* holds the menu options */}
 
-            <Text style={styles.menuTitle}>MENU</Text> {/* Menu Title */}
+            <Text style={styles.menuTitle}>MENU</Text>
 
             <TouchableOpacity
-              style={styles.menuItem}
+              style={styles.menuOption}
               onPress={() => {
                 closeMenu();
                 navigation.navigate('My Tasks'); // go to my task screen
@@ -55,7 +60,7 @@ export default function MenuBar({ navigation }) { // create the menu bar
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.menuItem}
+              style={styles.menuOption}
               onPress={() => {
                 closeMenu();
                 navigation.navigate('Sorted Activity'); // go to Sorted Activity
@@ -76,8 +81,10 @@ export default function MenuBar({ navigation }) { // create the menu bar
 
           </View>
 
-        </View>
+        </TouchableOpacity>
+
       </Modal>
+
     </View>
   );
 }

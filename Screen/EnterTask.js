@@ -14,9 +14,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { fonts, useTheme } from '../theme/ThemeContext';
 import ScreenTitle from '../components/ScreenTitle';
 import AppButton from '../components/AppButton';
+import SelectField from '../components/SelectField';
 
 const SUBJECTS = ['Mobile Programming', 'Reading Visual Art']; // subject choices
-const ACTIVITY_TYPES = ['MCO1', 'MCO2']; // activity type choices
+const ACTIVITY_TYPES = ['Project', 'Assignment', 'Activity']; // activity type choices
 
 // Label + text box. Highlights the border in blue while the user is typing.
 function Field({ label, multiline, ...inputProps }) {
@@ -37,34 +38,6 @@ function Field({ label, multiline, ...inputProps }) {
         {...inputProps}
       />
     </View>
-  </View>
-);
-}
-
-// Row of tappable choices. The selected one is filled in blue.
-function Choices({ label, options, selected, onSelect }) {
-  const { colors } = useTheme();
-  const styles = useMemo(() => makeStyles(colors), [colors]);
-
-  return (
-    <View style={styles.field}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={styles.chipRow}>
-        {options.map((option) => {
-          const active = option === selected;
-          return (
-            <TouchableOpacity
-              key={option}
-              style={[styles.chip, active && styles.chipActive]}
-              activeOpacity={0.85}
-              onPress={() => onSelect(option)}
-            >
-              <Text style={[styles.chipText, active && styles.chipTextActive]}>{option}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </View>
   );
 }
 
@@ -72,8 +45,8 @@ export default function EnterTask({ navigation }) { // creates the Enter Task sc
   const { isDark, colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
 
-  const [subject, setSubject] = useState(SUBJECTS[0]); // stores the chosen subject
-  const [activityType, setActivityType] = useState(ACTIVITY_TYPES[0]); // stores the chosen type
+  const [subject, setSubject] = useState(null); // stores the chosen subject
+  const [activityType, setActivityType] = useState(null); // stores the chosen type
   const [deadline, setDeadline] = useState(new Date()); // stores the chosen deadline
   const [showPicker, setShowPicker] = useState(false); // shows or hides the date picker
 
@@ -102,21 +75,24 @@ export default function EnterTask({ navigation }) { // creates the Enter Task sc
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.card}> {/* holds the form */}
+        <View style={styles.card}>
+          {/* holds the form */}
 
           <ScreenTitle title="ENTER TASK" />
 
           <Field label="Title" placeholder="Title of your Activity" />
 
-          <Choices
+          <SelectField
             label="Subject"
+            placeholder="Select subject"
             options={SUBJECTS}
             selected={subject}
             onSelect={setSubject}
           />
 
-          <Choices
+          <SelectField
             label="Activity Type"
+            placeholder="Select activity type"
             options={ACTIVITY_TYPES}
             selected={activityType}
             onSelect={setActivityType}
@@ -153,7 +129,8 @@ export default function EnterTask({ navigation }) { // creates the Enter Task sc
             )}
           </View>
 
-          <AppButton title="CONTINUE" onPress={() => navigation.navigate('Confirm Task')} /> {/* goes to the Confirm Task screen */}
+          {/* goes to the Confirm Task screen */}
+          <AppButton title="CONTINUE" onPress={() => navigation.navigate('Confirm Task')} />
 
         </View>
       </ScrollView>
@@ -215,37 +192,6 @@ const makeStyles = (colors) =>
 
     inputFocused: {
       borderColor: colors.primary,
-    },
-
-    chipRow: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-    },
-
-    chip: {
-      backgroundColor: 'transparent',
-      borderWidth: 1.5,
-      borderColor: colors.border,
-      borderRadius: 20,
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      marginRight: 8,
-      marginBottom: 8,
-    },
-
-    chipActive: {
-      backgroundColor: colors.primary,
-      borderColor: colors.primary,
-    },
-
-    chipText: {
-      fontFamily: fonts.medium,
-      fontSize: 14,
-      color: colors.muted,
-    },
-
-    chipTextActive: {
-      color: colors.onPrimary,
     },
 
     dateButton: {

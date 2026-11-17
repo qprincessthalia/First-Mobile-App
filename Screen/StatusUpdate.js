@@ -5,7 +5,6 @@ import {
   View, // holds the page elements
   Text, // displays text
   TouchableOpacity, // allows buttons to be clickable
-  ScrollView, // allows scrolling
 } from 'react-native';
 
 import { fonts, useTheme } from '../theme/ThemeContext';
@@ -66,22 +65,25 @@ export default function StatusUpdate({ navigation }) { // creates the status upd
   const statusColor = (status) => (status === 'Completed' ? colors.done : colors.pending);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <ScreenContainer>
+      {/* holds the entire page */}
+      <View style={styles.box}>
+        {/* holds the activity status content */}
 
-    <ScreenContainer> {/* holds the entire page */}
-      <View style={styles.box}> {/* holds the activity status content */}
-        <ScreenTitle title="ACTIVITY STATUS" /> {/* displays the page title */}
+        {/* displays the page title */}
+        <ScreenTitle title="ACTIVITY STATUS" />
 
         {activities.map((item) => ( // displays each activity
 
           <View
             key={item.id}
             style={[styles.card, { borderLeftColor: statusColor(item.status) }]}
-          > {/* creates a card for each activity */}
+          >
+            {/* creates a card for each activity */}
 
-            <Text style={styles.subject}>{item.subject}</Text> {/* displays the subject */}
+            <Text style={styles.subject}>{item.subject}</Text>
 
-            <Text style={styles.titleText}>{item.title}</Text> {/* displays the activity title */}
+            <Text style={styles.titleText}>{item.title}</Text>
 
             <TouchableOpacity
               style={styles.statusButton}
@@ -90,13 +92,15 @@ export default function StatusUpdate({ navigation }) { // creates the status upd
             >
               <Text style={[styles.statusText, { color: statusColor(item.status) }]}>
                 {item.status}
-              </Text> {/* displays the current status */}
+              </Text>
 
-              <Text style={styles.arrow}>⌄</Text> {/* displays the dropdown arrow */}
+              <Text style={styles.arrow}>⌄</Text>
             </TouchableOpacity>
 
-            {openId === 2 && (
+            {/* displays the dropdown when this activity is selected */}
+            {openId === item.id && (
               <View style={styles.dropdown}>
+                {/* holds the status options */}
 
                 <TouchableOpacity
                   style={styles.option}
@@ -116,8 +120,10 @@ export default function StatusUpdate({ navigation }) { // creates the status upd
             )}
 
           </View>
+        ))}
 
-        <AppButton title="SAVE UPDATE" onPress={() => navigation.navigate('Status')} /> {/* navigates to the Status screen */}
+        {/* navigates to the Status screen */}
+        <AppButton title="SAVE UPDATE" onPress={() => navigation.navigate('Status')} />
       </View>
     </ScreenContainer>
   );

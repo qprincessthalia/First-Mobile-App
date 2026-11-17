@@ -14,8 +14,8 @@ import { ThemeProvider, useTheme, fonts } from './theme/ThemeContext';
 import ThemeToggle from './components/ThemeToggle';
 
 import HomeScreen from './Screen/HomeScreen';
-import LogIn from './Screen/LogIn';
-import Choose from './Screen/Choose';
+import logIn from './Screen/logIn';
+import choose from './Screen/choose';
 import EnterTask from './Screen/EnterTask';
 import ConfirmTask from './Screen/ConfirmTask';
 import MyTask from './Screen/MyTask';
@@ -74,9 +74,9 @@ function AppNavigator() {
 
         <Stack.Screen name="Home" component={HomeScreen} options={themeOnly} />
 
-        <Stack.Screen name="Start" component={LogIn} options={themeOnly} />
+        <Stack.Screen name="Start" component={logIn} options={themeOnly} />
 
-        <Stack.Screen name="Activity" component={Choose} />
+        <Stack.Screen name="Activity" component={choose} />
 
         <Stack.Screen name="Enter Task" component={EnterTask} />
 

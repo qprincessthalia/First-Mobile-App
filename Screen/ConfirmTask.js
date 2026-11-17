@@ -20,8 +20,7 @@ function Detail({ label, value }) {
       <Text style={styles.detailLabel}>{label}</Text>
       <Text style={styles.detailValue}>{value}</Text>
     </View>
-  </View>
-);
+  );
 }
 
 export default function ConfirmTask({ navigation }) { // creates the ConfirmTask screen
@@ -29,22 +28,31 @@ export default function ConfirmTask({ navigation }) { // creates the ConfirmTask
   const styles = useMemo(() => makeStyles(colors), [colors]);
 
   return (
-    <ScreenContainer> {/* holds the entire page */}
-      <View style={styles.taskBox}> {/* holds the task details */}
+    <ScreenContainer>
+      {/* holds the entire page */}
+      <View style={styles.taskBox}>
+        {/* holds the task details */}
 
-        <ScreenTitle title="CONFIRM TASK" /> {/* displays the page title */}
+        {/* displays the page title */}
+        <ScreenTitle title="CONFIRM TASK" />
 
-        <Text style={styles.taskTitle}>First Mobile App</Text> {/* displays the task title */}
+        {/* displays the task title */}
+        <Text style={styles.taskTitle}>First Mobile App</Text>
 
-        <Detail label="Subject" value="Mobile Programming" /> {/* displays the subject */}
-        <Detail label="Activity Type" value="MCO 1" /> {/* displays the activity type */}
-        <Detail label="Description" value="Create a Static Mobile App" /> {/* displays the description */}
-        <Detail label="Deadline" value="September 30, 2026" /> {/* displays the deadline */}
+        {/* displays the subject, activity type, description and deadline */}
+        <Detail label="Subject" value="Mobile Programming" />
+        <Detail label="Activity Type" value="MCO 1" />
+        <Detail label="Description" value="Create a Static Mobile App" />
+        <Detail label="Deadline" value="September 30, 2026" />
 
         <View style={styles.buttons}>
-          <AppButton title="SAVE TASK" onPress={() => navigation.navigate('My Tasks')} /> {/* navigates to the My Tasks screen */}
+          {/* navigates to the My Tasks screen */}
+          <AppButton title="SAVE TASK" onPress={() => navigation.navigate('My Tasks')} />
+
           <View style={styles.gap} />
-          <AppButton title="CANCEL" variant="ghost" onPress={() => navigation.goBack()} /> {/* goes back to the previous screen */}
+
+          {/* goes back to the previous screen */}
+          <AppButton title="CANCEL" variant="ghost" onPress={() => navigation.goBack()} />
         </View>
 
       </View>

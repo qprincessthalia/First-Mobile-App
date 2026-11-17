@@ -17,8 +17,10 @@ export default function SortedActivity() { // create sorted activity screen
   const [sortBy, setSortBy] = useState(''); // stores the selected sorting option
 
   return (
-    <ScreenContainer> {/* makes the page scrollable */}
-      <View style={styles.taskBox}>{/* holds the sorted activities */}
+    <ScreenContainer>
+      {/* makes the page scrollable */}
+      <View style={styles.taskBox}>
+        {/* holds the sorted activities */}
         <ScreenTitle title="SORTED ACTIVITIES" />
 
         <View style={styles.buttonRow}>
@@ -43,13 +45,9 @@ export default function SortedActivity() { // create sorted activity screen
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => setSortBy('deadline')}
-        >
-          <Text style={styles.buttonText}>Sort by Deadline</Text>
-        </TouchableOpacity>
-      </View>
+        {/* displays the activities sorted by subject */}
+        {sortBy === 'subject' && (
+          <View>
 
             <View style={styles.subjectBox}>
               <Text style={styles.subjectTitle}>Mobile Programming</Text>
@@ -108,7 +106,9 @@ export default function SortedActivity() { // create sorted activity screen
               <Text style={styles.deadline}>Deadline: December 5, 2026</Text>
               <Text style={styles.subject}>Subject: Mobile Programming</Text>
             </View>
+
           </View>
+        )}
 
       </View>
     </ScreenContainer>

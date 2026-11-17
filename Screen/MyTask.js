@@ -28,10 +28,12 @@ export default function MyTask({ navigation }) { // create the my task screen
   const styles = useMemo(() => makeStyles(colors), [colors]);
 
   return (
-    <ScreenContainer> {/* hold the entire screen */}
+    <ScreenContainer>
+      {/* hold the entire screen */}
       <ScreenTitle title="MY TASKS" />
 
-      <View style={styles.taskBox}> {/* hold the first task */}
+      {/* hold the first task */}
+      <View style={styles.taskBox}>
         <Text style={styles.taskTitle}>First Mobile App</Text>
         <Info label="Subject" value="Mobile Programming" />
         <Info label="Activity Type" value="MCO1" />
@@ -39,7 +41,8 @@ export default function MyTask({ navigation }) { // create the my task screen
         <Info label="Deadline" value="September 30, 2026" />
       </View>
 
-      <View style={styles.taskBox}> {/* hold the second task */}
+      {/* hold the second task */}
+      <View style={styles.taskBox}>
         <Text style={styles.taskTitle}>Second Mobile App</Text>
         <Info label="Subject" value="Mobile Programming" />
         <Info label="Activity Type" value="MCO2" />
@@ -47,7 +50,8 @@ export default function MyTask({ navigation }) { // create the my task screen
         <Info label="Deadline" value="December 5, 2026" />
       </View>
 
-      <View style={styles.taskBox}> {/* hold the third task */}
+      {/* hold the third task */}
+      <View style={styles.taskBox}>
         <Text style={styles.taskTitle}>Learning Application</Text>
         <Info label="Subject" value="Reading Visual Art" />
         <Info label="Activity Type" value="MCO1" />
@@ -55,7 +59,8 @@ export default function MyTask({ navigation }) { // create the my task screen
         <Info label="Deadline" value="Sept 30, 2026" />
       </View>
 
-      <View style={styles.buttonRow}> {/* holds the buttons in one row */}
+      {/* holds the buttons in one row */}
+      <View style={styles.buttonRow}>
         <AppButton
           title="ADD TASK"
           style={styles.half}
