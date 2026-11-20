@@ -1,12 +1,13 @@
+
 import { useMemo } from 'react';
 import {
-  StyleSheet, // design page
-  Text, // display text
-  View, // hold the entire page
-  Image, // displays images
+  StyleSheet,
+  Text,
+  View,
+  Image,
 } from 'react-native';
 
-import logo_pic from '../assets/task.png'; // get the app logo
+import logo_pic from '../assets/task.png';
 
 import { fonts, useTheme } from '../theme/ThemeContext';
 import AppButton from '../components/AppButton';
@@ -17,7 +18,6 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* holds the whole page */}
 
       <Image source={logo_pic} style={styles.logo} />
 
@@ -28,10 +28,15 @@ export default function HomeScreen({ navigation }) {
 
       <View style={styles.goldLine} />
 
-      <Text style={styles.subtitle}>Welcome to your Task and Assignment Planner!</Text>
+      <Text style={styles.subtitle}>
+        Welcome to your Task and Assignment Planner!
+      </Text>
 
-      {/* open the start page */}
-      <AppButton title="START" onPress={() => navigation.navigate('Start')} />
+      <AppButton
+        title="START"
+        onPress={() => navigation.navigate('Start')}
+      />
+
     </View>
   );
 }

@@ -1,14 +1,16 @@
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'; // Handles the navigation of the whole app.
-import { createNativeStackNavigator } from '@react-navigation/native-stack'; // Creates a stack system that manages the order of screens.
+
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { View } from 'react-native';
+
 import {
-  Poppins_400Regular,
-  Poppins_500Medium,
-  Poppins_600SemiBold,
-  Poppins_700Bold,
-} from '@expo-google-fonts/poppins';
+  Fredoka_400Regular,
+  Fredoka_500Medium,
+  Fredoka_600SemiBold,
+  Fredoka_700Bold,
+} from '@expo-google-fonts/fredoka';
 
 import { ThemeProvider, useTheme, fonts } from './theme/ThemeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -28,9 +30,8 @@ import Status from './Screen/Status';
 import ManageSubjects from './Screen/ManageSubjects';
 
 const Stack = createNativeStackNavigator();
-// Creates the Stack Navigator that will manage the screens.
 
-// All screens live here. It reads the current theme (light or dark).
+// All screens live here.
 function AppNavigator() {
   const { isDark, colors } = useTheme();
   const { user, loading } = useAuth();
@@ -40,8 +41,9 @@ function AppNavigator() {
     return null;
   }
 
-  // Gives React Navigation the same colors as the app theme.
+  // Navigation theme.
   const base = isDark ? DarkTheme : DefaultTheme;
+
   const navigationTheme = {
     ...base,
     colors: {
@@ -54,15 +56,18 @@ function AppNavigator() {
     },
   };
 
-  // Shared look for every screen. The back arrow is hidden, and the
-  // header shows the theme button + the menu button on the right.
+  // Shared look for every screen.
   const screenOptions = ({ navigation }) => ({
-    headerBackVisible: false, // removes the arrow on the left
+    headerBackVisible: false,
     headerStyle: { backgroundColor: colors.surface },
     headerTintColor: colors.text,
-    headerTitleStyle: { fontFamily: fonts.semiBold, fontSize: 18 },
+    headerTitleStyle: {
+      fontFamily: fonts.semiBold,
+      fontSize: 18,
+    },
     headerShadowVisible: false,
     contentStyle: { backgroundColor: colors.background },
+
     headerRight: () => (
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <ThemeToggle />
@@ -71,8 +76,10 @@ function AppNavigator() {
     ),
   });
 
-  // Screens that only show the theme button (no menu).
-  const themeOnly = { headerRight: () => <ThemeToggle /> };
+  // Screens that only show the theme button.
+  const themeOnly = {
+    headerRight: () => <ThemeToggle />,
+  };
 
   return (
     <NavigationContainer theme={navigationTheme}>
@@ -111,12 +118,12 @@ function AppNavigator() {
 }
 
 export default function App() {
-  // Loads Poppins before showing any screen.
+  // Loads Fredoka before showing any screen.
   const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_500Medium,
-    Poppins_600SemiBold,
-    Poppins_700Bold,
+    Fredoka_400Regular,
+    Fredoka_500Medium,
+    Fredoka_600SemiBold,
+    Fredoka_700Bold,
   });
 
   if (!fontsLoaded) {
@@ -133,25 +140,3 @@ export default function App() {
     </ThemeProvider>
   );
 }
-
-
-// ---- COMPONENTS:
-//HomeScreen
-//LogIn
-//Choose
-//EnterTask
-//ConfirmTask
-//MyTask
-//SortedActivity
-//MenuBar
-//StatusUpdate
-//Status
-//ManageSubjects
-
-// -----React Navigation components — 3
-//NavigationContainer
-//Stack.Navigator
-//Stack.Screen
-
-//main component
-//app
