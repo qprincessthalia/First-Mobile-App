@@ -3,39 +3,78 @@ import {
   StyleSheet, // for styling
   View, // hold the part of the page
   Text, // display text
-  TextInput, // where you can type
+  TouchableOpacity, // makes the link clickable
   KeyboardAvoidingView,
   ScrollView,
   Platform,
 } from 'react-native';
 
 import { fonts, useTheme } from '../theme/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import FormField from '../components/FormField';
 import AppButton from '../components/AppButton';
-
-// Label + text box. Highlights the border in blue while the user is typing.
-function Field({ label, ...inputProps }) {
-  const { colors } = useTheme();
-  const styles = useMemo(() => makeStyles(colors), [colors]);
-  const [focused, setFocused] = useState(false);
-
-  return (
-    <View style={styles.field}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={[styles.input, focused && styles.inputFocused]}
-        placeholderTextColor={colors.muted}
-        autoCapitalize="none"
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        {...inputProps}
-      />
-    </View>
-  );
-}
 
 export default function LogIn({ navigation }) { // makes the login page
   const { colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
+  const { login, register } = useAuth();
+
+  const [mode, setMode] = useState('login'); // 'login' or 'register'
+  const [studentNumber, setStudentNumber] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+  const [formError, setFormError] = useState(''); // message from the login attempt
+  const [busy, setBusy] = useState(false); // stops double taps
+
+  const isRegister = mode === 'register';
+
+  // Switches between Log In and Create Account.
+  const switchMode = () => {
+    setMode(isRegister ? 'login' : 'register');
+    setErrors({});
+    setFormError('');
+  };
+
+  // Checks the fields and returns true when everything is filled in correctly.
+  const validate = () => {
+    const found = {};
+
+    if (!studentNumber.trim()) {
+      found.studentNumber = 'Please enter your student number.';
+    }
+    if (isRegister && username.trim().length < 2) {
+      found.username = 'Please enter your name.';
+    }
+    if (password.length < 6) {
+      found.password = 'Password must be at least 6 characters.';
+    }
+
+    setErrors(found);
+    return Object.keys(found).length === 0;
+  };
+
+  // Logs in (or creates the account), then opens the dashboard.
+  const handleSubmit = async () => {
+    if (busy || !validate()) {
+      return;
+    }
+
+    setBusy(true);
+    setFormError('');
+
+    const result = isRegister
+      ? await register({ studentNumber, username, password })
+      : await login({ studentNumber, password });
+
+    if (!result.ok) {
+      setFormError(result.error);
+      setBusy(false);
+      return;
+    }
+
+    navigation.reset({ index: 0, routes: [{ name: 'Activity' }] });
+  };
 
   return (
     <KeyboardAvoidingView
@@ -50,32 +89,56 @@ export default function LogIn({ navigation }) { // makes the login page
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.eyebrow}>STUDENT PORTAL</Text>
-          <Text style={styles.title}>Student Login</Text>
+          <Text style={styles.title}>{isRegister ? 'Create Account' : 'Student Login'}</Text>
           <View style={styles.goldLine} />
-          <Text style={styles.subtitle}>Sign in to manage your tasks</Text>
+          <Text style={styles.subtitle}>
+            {isRegister ? 'Set up your account once' : 'Sign in to see your tasks'}
+          </Text>
         </View>
 
         {/* Form card */}
         <View style={styles.card}>
-          <Field
+          <FormField
             label="Student Number"
             placeholder="Enter student number"
-            keyboardType="number-pad"
+            autoCapitalize="none"
+            value={studentNumber}
+            onChangeText={setStudentNumber}
+            error={errors.studentNumber}
           />
 
-          <Field
-            label="Student Password"
+          {isRegister && (
+            <FormField
+              label="Your Name"
+              placeholder="Enter your name"
+              value={username}
+              onChangeText={setUsername}
+              error={errors.username}
+            />
+          )}
+
+          <FormField
+            label="Password"
             placeholder="Enter password"
             secureTextEntry
+            autoCapitalize="none"
+            value={password}
+            onChangeText={setPassword}
+            error={errors.password}
           />
 
-          <Field
-            label="Student Username"
-            placeholder="Enter preferred username"
-          />
+          {!!formError && <Text style={styles.formError}>{formError}</Text>}
 
-          {/* goes to activity page */}
-          <AppButton title="LOG IN" onPress={() => navigation.navigate('Activity')} />
+          <AppButton title={isRegister ? 'CREATE ACCOUNT' : 'LOG IN'} onPress={handleSubmit} />
+
+          <TouchableOpacity style={styles.switchRow} onPress={switchMode}>
+            <Text style={styles.switchText}>
+              {isRegister ? 'Already have an account? ' : 'New here? '}
+              <Text style={styles.switchLink}>
+                {isRegister ? 'Log in' : 'Create account'}
+              </Text>
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -141,30 +204,26 @@ const makeStyles = (colors) =>
       padding: 24,
     },
 
-    field: {
-      marginBottom: 20,
+    formError: {
+      fontFamily: fonts.medium,
+      fontSize: 13,
+      color: colors.danger,
+      marginBottom: 14,
     },
 
-    label: {
-      fontFamily: fonts.medium,
+    switchRow: {
+      alignItems: 'center',
+      marginTop: 18,
+    },
+
+    switchText: {
+      fontFamily: fonts.regular,
       fontSize: 14,
       color: colors.muted,
-      marginBottom: 8,
     },
 
-    input: {
-      fontFamily: fonts.regular,
-      backgroundColor: colors.surfaceAlt,
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: 10,
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      fontSize: 15,
-      color: colors.text,
-    },
-
-    inputFocused: {
-      borderColor: colors.primary,
+    switchLink: {
+      fontFamily: fonts.semiBold,
+      color: colors.primary,
     },
   });

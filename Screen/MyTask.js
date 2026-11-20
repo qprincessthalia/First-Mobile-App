@@ -3,12 +3,17 @@ import {
   StyleSheet, // design the app
   View, // hold the entire page
   Text, // display text
+  TouchableOpacity, // allows buttons to be clickable
+  Alert, // asks "are you sure?" before deleting
 } from 'react-native';
 
 import { fonts, useTheme } from '../theme/ThemeContext';
+import { useTasks } from '../context/TasksContext';
+import { formatDate } from '../utils/dates';
 import ScreenContainer from '../components/ScreenContainer';
 import ScreenTitle from '../components/ScreenTitle';
 import AppButton from '../components/AppButton';
+import StatusBadge from '../components/StatusBadge';
 
 // One line inside a task card: muted label + value.
 function Info({ label, value }) {
@@ -26,40 +31,75 @@ function Info({ label, value }) {
 export default function MyTask({ navigation }) { // create the my task screen
   const { colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
+  const { tasks, updateTask, deleteTask } = useTasks();
+
+  // Tasks with the nearest deadline first.
+  const sortedTasks = useMemo(
+    () => [...tasks].sort((a, b) => new Date(a.deadline) - new Date(b.deadline)),
+    [tasks]
+  );
+
+  // Marks a task as done, or back to pending.
+  const toggleDone = (task) => {
+    updateTask(task.id, { status: task.status === 'Completed' ? 'Pending' : 'Completed' });
+  };
+
+  // Asks before deleting a task.
+  const confirmDelete = (task) => {
+    Alert.alert('Delete task', `Delete "${task.title}"?`, [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', style: 'destructive', onPress: () => deleteTask(task.id) },
+    ]);
+  };
 
   return (
     <ScreenContainer>
-      {/* hold the entire screen */}
       <ScreenTitle title="MY TASKS" />
 
-      {/* hold the first task */}
-      <View style={styles.taskBox}>
-        <Text style={styles.taskTitle}>First Mobile App</Text>
-        <Info label="Subject" value="Mobile Programming" />
-        <Info label="Activity Type" value="MCO1" />
-        <Info label="Description" value="Create a Static Mobile App" />
-        <Info label="Deadline" value="September 30, 2026" />
-      </View>
+      {sortedTasks.length === 0 && (
+        <View style={styles.emptyBox}>
+          <Text style={styles.emptyTitle}>No tasks yet</Text>
+          <Text style={styles.emptyText}>Tap ADD TASK to create your first one.</Text>
+        </View>
+      )}
 
-      {/* hold the second task */}
-      <View style={styles.taskBox}>
-        <Text style={styles.taskTitle}>Second Mobile App</Text>
-        <Info label="Subject" value="Mobile Programming" />
-        <Info label="Activity Type" value="MCO2" />
-        <Info label="Description" value="Create a Dynamic Mobile App" />
-        <Info label="Deadline" value="December 5, 2026" />
-      </View>
+      {sortedTasks.map((task) => {
+        const done = task.status === 'Completed';
 
-      {/* hold the third task */}
-      <View style={styles.taskBox}>
-        <Text style={styles.taskTitle}>Learning Application</Text>
-        <Info label="Subject" value="Reading Visual Art" />
-        <Info label="Activity Type" value="MCO1" />
-        <Info label="Description" value="Analyze 5 Filipino Artwork" />
-        <Info label="Deadline" value="Sept 30, 2026" />
-      </View>
+        return (
+          <View key={task.id} style={styles.taskBox}>
+            <View style={styles.cardHeader}>
+              <Text style={styles.taskTitle}>{task.title}</Text>
+              <StatusBadge task={task} />
+            </View>
 
-      {/* holds the buttons in one row */}
+            <Info label="Subject" value={task.subject} />
+            <Info label="Activity Type" value={task.type} />
+            {!!task.description && <Info label="Description" value={task.description} />}
+            <Info label="Deadline" value={formatDate(task.deadline)} />
+
+            <View style={styles.actions}>
+              <TouchableOpacity style={styles.actionButton} onPress={() => toggleDone(task)}>
+                <Text style={[styles.actionText, { color: done ? colors.pending : colors.done }]}>
+                  {done ? 'MARK PENDING' : 'MARK DONE'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={() => navigation.navigate('Enter Task', { task })}
+              >
+                <Text style={styles.actionText}>EDIT</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.actionButton} onPress={() => confirmDelete(task)}>
+                <Text style={[styles.actionText, { color: colors.danger }]}>DELETE</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        );
+      })}
+
       <View style={styles.buttonRow}>
         <AppButton
           title="ADD TASK"
@@ -79,6 +119,30 @@ export default function MyTask({ navigation }) { // create the my task screen
 
 const makeStyles = (colors) =>
   StyleSheet.create({
+    emptyBox: {
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 14,
+      padding: 24,
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+
+    emptyTitle: {
+      fontFamily: fonts.semiBold,
+      fontSize: 16,
+      color: colors.text,
+      marginBottom: 4,
+    },
+
+    emptyText: {
+      fontFamily: fonts.regular,
+      fontSize: 14,
+      color: colors.muted,
+      textAlign: 'center',
+    },
+
     taskBox: {
       width: '100%',
       padding: 18,
@@ -91,11 +155,19 @@ const makeStyles = (colors) =>
       backgroundColor: colors.surface,
     },
 
+    cardHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+
     taskTitle: {
+      flex: 1,
       fontFamily: fonts.semiBold,
       fontSize: 18,
       color: colors.gold,
-      marginBottom: 10,
+      marginRight: 10,
     },
 
     infoRow: {
@@ -112,6 +184,28 @@ const makeStyles = (colors) =>
       fontFamily: fonts.regular,
       fontSize: 15,
       color: colors.text,
+    },
+
+    actions: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      flexWrap: 'wrap',
+      marginTop: 8,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      paddingTop: 8,
+    },
+
+    actionButton: {
+      paddingVertical: 6,
+      paddingHorizontal: 10,
+    },
+
+    actionText: {
+      fontFamily: fonts.semiBold,
+      fontSize: 13,
+      letterSpacing: 0.5,
+      color: colors.primary,
     },
 
     buttonRow: {

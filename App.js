@@ -11,11 +11,13 @@ import {
 } from '@expo-google-fonts/poppins';
 
 import { ThemeProvider, useTheme, fonts } from './theme/ThemeContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { TasksProvider } from './context/TasksContext';
 import ThemeToggle from './components/ThemeToggle';
 
 import HomeScreen from './Screen/HomeScreen';
-import logIn from './Screen/logIn';
-import choose from './Screen/choose';
+import LogIn from './Screen/LogIn';
+import Choose from './Screen/Choose';
 import EnterTask from './Screen/EnterTask';
 import ConfirmTask from './Screen/ConfirmTask';
 import MyTask from './Screen/MyTask';
@@ -23,6 +25,7 @@ import SortedActivity from './Screen/SortedActivity';
 import MenuBar from './Screen/MenuBar';
 import StatusUpdate from './Screen/StatusUpdate';
 import Status from './Screen/Status';
+import ManageSubjects from './Screen/ManageSubjects';
 
 const Stack = createNativeStackNavigator();
 // Creates the Stack Navigator that will manage the screens.
@@ -30,6 +33,12 @@ const Stack = createNativeStackNavigator();
 // All screens live here. It reads the current theme (light or dark).
 function AppNavigator() {
   const { isDark, colors } = useTheme();
+  const { user, loading } = useAuth();
+
+  // Wait until we know if a student is already logged in.
+  if (loading) {
+    return null;
+  }
 
   // Gives React Navigation the same colors as the app theme.
   const base = isDark ? DarkTheme : DefaultTheme;
@@ -70,13 +79,16 @@ function AppNavigator() {
 
       <StatusBar style={isDark ? 'light' : 'dark'} />
 
-      <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
+      <Stack.Navigator
+        initialRouteName={user ? 'Activity' : 'Home'}
+        screenOptions={screenOptions}
+      >
 
         <Stack.Screen name="Home" component={HomeScreen} options={themeOnly} />
 
-        <Stack.Screen name="Start" component={logIn} options={themeOnly} />
+        <Stack.Screen name="Start" component={LogIn} options={themeOnly} />
 
-        <Stack.Screen name="Activity" component={choose} />
+        <Stack.Screen name="Activity" component={Choose} />
 
         <Stack.Screen name="Enter Task" component={EnterTask} />
 
@@ -89,6 +101,8 @@ function AppNavigator() {
         <Stack.Screen name="Status Update" component={StatusUpdate} />
 
         <Stack.Screen name="Status" component={Status} />
+
+        <Stack.Screen name="Manage Subjects" component={ManageSubjects} />
 
       </Stack.Navigator>
 
@@ -111,7 +125,11 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <AppNavigator />
+      <AuthProvider>
+        <TasksProvider>
+          <AppNavigator />
+        </TasksProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
@@ -128,6 +146,7 @@ export default function App() {
 //MenuBar
 //StatusUpdate
 //Status
+//ManageSubjects
 
 // -----React Navigation components — 3
 //NavigationContainer

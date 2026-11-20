@@ -6,6 +6,8 @@ import {
 } from 'react-native';
 
 import { fonts, useTheme } from '../theme/ThemeContext';
+import { useTasks } from '../context/TasksContext';
+import { formatDate } from '../utils/dates';
 import ScreenContainer from '../components/ScreenContainer';
 import ScreenTitle from '../components/ScreenTitle';
 import AppButton from '../components/AppButton';
@@ -23,35 +25,54 @@ function Detail({ label, value }) {
   );
 }
 
-export default function ConfirmTask({ navigation }) { // creates the ConfirmTask screen
+export default function ConfirmTask({ navigation, route }) { // creates the ConfirmTask screen
   const { colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
+  const { addTask, updateTask } = useTasks();
+
+  // The task that was filled in on the Enter Task screen.
+  const task = route.params?.task;
+
+  if (!task) {
+    return (
+      <ScreenContainer>
+        <Text style={styles.detailValue}>Nothing to confirm yet.</Text>
+      </ScreenContainer>
+    );
+  }
+
+  // Saves the task, then shows My Tasks.
+  const handleSave = () => {
+    if (task.id) {
+      updateTask(task.id, task);
+    } else {
+      addTask(task);
+    }
+
+    navigation.reset({
+      index: 1,
+      routes: [{ name: 'Activity' }, { name: 'My Tasks' }],
+    });
+  };
 
   return (
     <ScreenContainer>
-      {/* holds the entire page */}
       <View style={styles.taskBox}>
-        {/* holds the task details */}
 
-        {/* displays the page title */}
         <ScreenTitle title="CONFIRM TASK" />
 
-        {/* displays the task title */}
-        <Text style={styles.taskTitle}>First Mobile App</Text>
+        <Text style={styles.taskTitle}>{task.title}</Text>
 
-        {/* displays the subject, activity type, description and deadline */}
-        <Detail label="Subject" value="Mobile Programming" />
-        <Detail label="Activity Type" value="MCO 1" />
-        <Detail label="Description" value="Create a Static Mobile App" />
-        <Detail label="Deadline" value="September 30, 2026" />
+        <Detail label="Subject" value={task.subject} />
+        <Detail label="Activity Type" value={task.type} />
+        {!!task.description && <Detail label="Description" value={task.description} />}
+        <Detail label="Deadline" value={formatDate(task.deadline)} />
 
         <View style={styles.buttons}>
-          {/* navigates to the My Tasks screen */}
-          <AppButton title="SAVE TASK" onPress={() => navigation.navigate('My Tasks')} />
+          <AppButton title="SAVE TASK" onPress={handleSave} />
 
           <View style={styles.gap} />
 
-          {/* goes back to the previous screen */}
           <AppButton title="CANCEL" variant="ghost" onPress={() => navigation.goBack()} />
         </View>
 

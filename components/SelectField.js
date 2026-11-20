@@ -12,8 +12,19 @@ import { fonts, useTheme } from '../theme/ThemeContext';
 
 // A text field that opens a list of choices when tapped.
 // options: array of strings, selected: the chosen string (or null),
-// onSelect: runs with the chosen string.
-export default function SelectField({ label, placeholder, options, selected, onSelect }) {
+// onSelect: runs with the chosen string, error: optional message to show,
+// emptyText: message shown when there are no options,
+// onRemove: optional, shows a red ✕ on each option and runs with that option.
+export default function SelectField({
+  label,
+  placeholder,
+  options,
+  selected,
+  onSelect,
+  error,
+  emptyText,
+  onRemove,
+}) {
   const { colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
 
@@ -31,7 +42,7 @@ export default function SelectField({ label, placeholder, options, selected, onS
 
       {/* The field the student taps */}
       <TouchableOpacity
-        style={[styles.box, open && styles.boxOpen]}
+        style={[styles.box, open && styles.boxOpen, !!error && styles.boxError]}
         activeOpacity={0.85}
         onPress={() => setOpen(true)}
       >
@@ -40,6 +51,8 @@ export default function SelectField({ label, placeholder, options, selected, onS
         </Text>
         <Text style={styles.arrow}>⌄</Text>
       </TouchableOpacity>
+
+      {!!error && <Text style={styles.errorText}>{error}</Text>}
 
       {/* The list of choices */}
       <Modal
@@ -51,27 +64,42 @@ export default function SelectField({ label, placeholder, options, selected, onS
         <TouchableOpacity
           style={styles.overlay}
           activeOpacity={1}
-          onPress={() => setOpen(false)} // tapping outside closes the list
+          onPress={() => setOpen(false)}
         >
           <View style={styles.sheet} onStartShouldSetResponder={() => true}>
             <Text style={styles.sheetTitle}>{label.toUpperCase()}</Text>
 
             <ScrollView>
+              {options.length === 0 && (
+                <Text style={styles.emptyText}>{emptyText || 'Nothing to choose from yet.'}</Text>
+              )}
+
               {options.map((option) => {
                 const active = option === selected;
 
                 return (
-                  <TouchableOpacity
-                    key={option}
-                    style={[styles.option, active && styles.optionActive]}
-                    activeOpacity={0.85}
-                    onPress={() => choose(option)}
-                  >
-                    <Text style={[styles.optionText, active && styles.optionTextActive]}>
-                      {option}
-                    </Text>
-                    {active && <Text style={styles.check}>✓</Text>}
-                  </TouchableOpacity>
+                  <View key={option} style={styles.optionRow}>
+                    <TouchableOpacity
+                      style={[styles.option, active && styles.optionActive]}
+                      activeOpacity={0.85}
+                      onPress={() => choose(option)}
+                    >
+                      <Text style={[styles.optionText, active && styles.optionTextActive]}>
+                        {option}
+                      </Text>
+                      {active && <Text style={styles.check}>✓</Text>}
+                    </TouchableOpacity>
+
+                    {!!onRemove && (
+                      <TouchableOpacity
+                        style={styles.removeButton}
+                        onPress={() => onRemove(option)}
+                        accessibilityLabel={`Remove ${option}`}
+                      >
+                        <Text style={styles.removeText}>✕</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
                 );
               })}
             </ScrollView>
@@ -109,6 +137,17 @@ const makeStyles = (colors) =>
 
     boxOpen: {
       borderColor: colors.primary,
+    },
+
+    boxError: {
+      borderColor: colors.danger,
+    },
+
+    errorText: {
+      fontFamily: fonts.regular,
+      fontSize: 12,
+      color: colors.danger,
+      marginTop: 6,
     },
 
     value: {
@@ -153,7 +192,22 @@ const makeStyles = (colors) =>
       paddingVertical: 8,
     },
 
+    emptyText: {
+      fontFamily: fonts.regular,
+      fontSize: 14,
+      color: colors.muted,
+      paddingHorizontal: 6,
+      paddingVertical: 12,
+    },
+
+    optionRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+
     option: {
+      flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -163,7 +217,6 @@ const makeStyles = (colors) =>
       borderRadius: 10,
       paddingVertical: 14,
       paddingHorizontal: 16,
-      marginBottom: 8,
     },
 
     optionActive: {
@@ -184,5 +237,16 @@ const makeStyles = (colors) =>
       fontFamily: fonts.bold,
       fontSize: 16,
       color: colors.primary,
+    },
+
+    removeButton: {
+      paddingHorizontal: 12,
+      paddingVertical: 12,
+    },
+
+    removeText: {
+      fontFamily: fonts.bold,
+      fontSize: 16,
+      color: colors.danger,
     },
   });

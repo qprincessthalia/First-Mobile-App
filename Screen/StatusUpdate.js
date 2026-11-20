@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import { fonts, useTheme } from '../theme/ThemeContext';
+import { useTasks } from '../context/TasksContext';
 import ScreenContainer from '../components/ScreenContainer';
 import ScreenTitle from '../components/ScreenTitle';
 import AppButton from '../components/AppButton';
@@ -15,115 +16,93 @@ import AppButton from '../components/AppButton';
 export default function StatusUpdate({ navigation }) { // creates the status update screen
   const { colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
+  const { tasks, setStatuses } = useTasks();
 
-  const [activities, setActivities] = useState([ // stores the list of activities
+  const [changes, setChanges] = useState({}); // new statuses picked but not saved yet
+  const [openId, setOpenId] = useState(null); // stores which task dropdown is open
 
-    {
-      id: 1, // unique ID for the activity
-      subject: 'Mobile Programming', // stores the subject
-      title: 'First Mobile App', // stores the activity title
-      status: 'Completed', // stores the activity status
-    },
+  // Tasks with the nearest deadline first.
+  const sortedTasks = useMemo(
+    () => [...tasks].sort((a, b) => new Date(a.deadline) - new Date(b.deadline)),
+    [tasks]
+  );
 
-    {
-      id: 2,
-      subject: 'Mobile Programming',
-      title: 'Second Mobile App',
-      status: 'Pending',
-    },
-
-    {
-      id: 3,
-      subject: 'Reading Visual Art',
-      title: 'Learning Application',
-      status: 'Pending',
-    },
-
-  ]);
-
-  const [openId, setOpenId] = useState(null); // stores which activity dropdown is open
-
-  const changeStatus = (id, status) => { // changes the status of an activity
-
-    setActivities( // updates the activities list
-
-      activities.map((activity) => // goes through each activity
-
-        activity.id === id // checks if the activity matches the selected ID
-
-          ? { ...activity, status: status } // updates the selected activity's status
-
-          : activity // keeps the other activities unchanged
-
-      )
-    );
-
-    setOpenId(null); // closes the dropdown after changing the status
-  };
+  // The status to show: the new pick if there is one, otherwise the saved one.
+  const currentStatus = (task) => changes[task.id] ?? task.status;
 
   // Returns the color that matches a status.
   const statusColor = (status) => (status === 'Completed' ? colors.done : colors.pending);
 
+  // Remembers the picked status and closes the dropdown.
+  const chooseStatus = (id, status) => {
+    setChanges((previous) => ({ ...previous, [id]: status }));
+    setOpenId(null);
+  };
+
+  // Saves all the changes and shows the Status screen.
+  const handleSave = () => {
+    setStatuses(changes);
+    navigation.reset({
+      index: 1,
+      routes: [{ name: 'Activity' }, { name: 'Status' }],
+    });
+  };
+
   return (
     <ScreenContainer>
-      {/* holds the entire page */}
       <View style={styles.box}>
-        {/* holds the activity status content */}
 
-        {/* displays the page title */}
         <ScreenTitle title="ACTIVITY STATUS" />
 
-        {activities.map((item) => ( // displays each activity
+        {sortedTasks.length === 0 && (
+          <Text style={styles.emptyText}>No tasks to update yet.</Text>
+        )}
 
-          <View
-            key={item.id}
-            style={[styles.card, { borderLeftColor: statusColor(item.status) }]}
-          >
-            {/* creates a card for each activity */}
+        {sortedTasks.map((task) => {
+          const status = currentStatus(task);
 
-            <Text style={styles.subject}>{item.subject}</Text>
-
-            <Text style={styles.titleText}>{item.title}</Text>
-
-            <TouchableOpacity
-              style={styles.statusButton}
-              activeOpacity={0.85}
-              onPress={() => setOpenId(openId === item.id ? null : item.id)} // opens or closes the status dropdown
+          return (
+            <View
+              key={task.id}
+              style={[styles.card, { borderLeftColor: statusColor(status) }]}
             >
-              <Text style={[styles.statusText, { color: statusColor(item.status) }]}>
-                {item.status}
-              </Text>
+              <Text style={styles.subject}>{task.subject}</Text>
 
-              <Text style={styles.arrow}>⌄</Text>
-            </TouchableOpacity>
+              <Text style={styles.titleText}>{task.title}</Text>
 
-            {/* displays the dropdown when this activity is selected */}
-            {openId === item.id && (
-              <View style={styles.dropdown}>
-                {/* holds the status options */}
+              <TouchableOpacity
+                style={styles.statusButton}
+                activeOpacity={0.85}
+                onPress={() => setOpenId(openId === task.id ? null : task.id)}
+              >
+                <Text style={[styles.statusText, { color: statusColor(status) }]}>{status}</Text>
+                <Text style={styles.arrow}>⌄</Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.option}
-                  onPress={() => changeStatus(item.id, 'Pending')} // changes the activity status to Pending
-                >
-                  <Text style={[styles.statusText, { color: colors.pending }]}>Pending</Text>
-                </TouchableOpacity>
+              {openId === task.id && (
+                <View style={styles.dropdown}>
 
-                <TouchableOpacity
-                  style={styles.option}
-                  onPress={() => changeStatus(item.id, 'Completed')} // changes the activity status to Completed
-                >
-                  <Text style={[styles.statusText, { color: colors.done }]}>Completed</Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.option}
+                    onPress={() => chooseStatus(task.id, 'Pending')}
+                  >
+                    <Text style={[styles.statusText, { color: colors.pending }]}>Pending</Text>
+                  </TouchableOpacity>
 
-              </View>
-            )}
+                  <TouchableOpacity
+                    style={styles.option}
+                    onPress={() => chooseStatus(task.id, 'Completed')}
+                  >
+                    <Text style={[styles.statusText, { color: colors.done }]}>Completed</Text>
+                  </TouchableOpacity>
 
-          </View>
-        ))}
+                </View>
+              )}
+            </View>
+          );
+        })}
 
-        {/* navigates to the Status screen */}
-        <AppButton title="SAVE UPDATE" onPress={() => navigation.navigate('Status')} />
+        {sortedTasks.length > 0 && <AppButton title="SAVE UPDATE" onPress={handleSave} />}
       </View>
     </ScreenContainer>
   );
@@ -137,6 +116,14 @@ const makeStyles = (colors) =>
       borderColor: colors.border,
       padding: 22,
       borderRadius: 18,
+    },
+
+    emptyText: {
+      fontFamily: fonts.regular,
+      fontSize: 14,
+      color: colors.muted,
+      textAlign: 'center',
+      paddingVertical: 12,
     },
 
     card: {

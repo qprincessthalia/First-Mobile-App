@@ -8,31 +8,48 @@ import {
 } from 'react-native';
 
 import { fonts, useTheme } from '../theme/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { useTasks } from '../context/TasksContext';
 import ScreenContainer from '../components/ScreenContainer';
 import ScreenTitle from '../components/ScreenTitle';
 
 export default function Choose({ navigation }) { // makes task menu
   const { colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
+  const { user } = useAuth();
+  const { tasks } = useTasks();
+
+  const completedCount = tasks.filter((task) => task.status === 'Completed').length;
+  const pendingCount = tasks.length - completedCount;
 
   return (
     <ScreenContainer>
-      {/* Holds the whole page */}
 
       <ScreenTitle title="MY TASK" />
+
+      <Text style={styles.greeting}>Hi, {user?.username}!</Text>
+
+      <View style={styles.statsRow}>
+        <View style={styles.statBox}>
+          <Text style={[styles.statNumber, { color: colors.pending }]}>{pendingCount}</Text>
+          <Text style={styles.statLabel}>Pending</Text>
+        </View>
+
+        <View style={styles.statBox}>
+          <Text style={[styles.statNumber, { color: colors.done }]}>{completedCount}</Text>
+          <Text style={styles.statLabel}>Completed</Text>
+        </View>
+      </View>
 
       <View style={styles.taskBox}>
 
         <TouchableOpacity
           style={styles.option}
           activeOpacity={0.85}
-          onPress={() => navigation.navigate('Enter Task')} // open the "Enter Task"
+          onPress={() => navigation.navigate('Enter Task')}
         >
           <View style={styles.iconWrap}>
-            <Image
-              source={require('../assets/add.png')} // display image (its location)
-              style={styles.icon}
-            />
+            <Image source={require('../assets/add.png')} style={styles.icon} />
           </View>
           <Text style={styles.optionText}>Add New Task</Text>
         </TouchableOpacity>
@@ -40,13 +57,10 @@ export default function Choose({ navigation }) { // makes task menu
         <TouchableOpacity
           style={styles.option}
           activeOpacity={0.85}
-          onPress={() => navigation.navigate('My Tasks')} // open the "My Task"
+          onPress={() => navigation.navigate('My Tasks')}
         >
           <View style={styles.iconWrap}>
-            <Image
-              source={require('../assets/view.png')} // display image (its location)
-              style={styles.icon}
-            />
+            <Image source={require('../assets/view.png')} style={styles.icon} />
           </View>
           <Text style={styles.optionText}>My Tasks</Text>
         </TouchableOpacity>
@@ -54,13 +68,10 @@ export default function Choose({ navigation }) { // makes task menu
         <TouchableOpacity
           style={[styles.option, styles.lastOption]}
           activeOpacity={0.85}
-          onPress={() => navigation.navigate('Status')} // open the "Status"
+          onPress={() => navigation.navigate('Status')}
         >
           <View style={styles.iconWrap}>
-            <Image
-              source={require('../assets/completed.png')} // display image (its location)
-              style={styles.icon}
-            />
+            <Image source={require('../assets/completed.png')} style={styles.icon} />
           </View>
           <Text style={styles.optionText}>Status</Text>
         </TouchableOpacity>
@@ -72,6 +83,41 @@ export default function Choose({ navigation }) { // makes task menu
 
 const makeStyles = (colors) =>
   StyleSheet.create({
+    greeting: {
+      fontFamily: fonts.medium,
+      fontSize: 16,
+      color: colors.muted,
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+
+    statsRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 16,
+    },
+
+    statBox: {
+      width: '48%',
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 14,
+      paddingVertical: 14,
+      alignItems: 'center',
+    },
+
+    statNumber: {
+      fontFamily: fonts.bold,
+      fontSize: 28,
+    },
+
+    statLabel: {
+      fontFamily: fonts.medium,
+      fontSize: 13,
+      color: colors.muted,
+    },
+
     taskBox: {
       width: '100%',
       padding: 20,
@@ -97,7 +143,6 @@ const makeStyles = (colors) =>
       marginBottom: 0,
     },
 
-    // Light circle behind each icon so dark icons stay visible in dark mode.
     iconWrap: {
       width: 46,
       height: 46,
@@ -119,9 +164,3 @@ const makeStyles = (colors) =>
       color: colors.text,
     },
   });
-// components used : StyleSheet
-//View
-//Text
-//TouchableOpacity
-//Image
-//Choose

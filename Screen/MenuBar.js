@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 
 import { fonts, useTheme } from '../theme/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function MenuBar({ navigation }) { // create the menu bar
   const { colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
+  const { logout } = useAuth();
 
   const [menuOpen, setMenuOpen] = useState(false); // check if the menu is open
 
@@ -20,13 +22,43 @@ export default function MenuBar({ navigation }) { // create the menu bar
     setMenuOpen(false); // closes the menu
   };
 
+  // Opens a screen with Activity as the screen underneath, so the stack stays small.
+  const goTo = (screen) => {
+    closeMenu();
+
+    if (screen === 'Activity') {
+      navigation.reset({ index: 0, routes: [{ name: 'Activity' }] });
+    } else {
+      navigation.reset({
+        index: 1,
+        routes: [{ name: 'Activity' }, { name: screen }],
+      });
+    }
+  };
+
+  // Logs out and goes back to the Home screen.
+  const handleLogout = async () => {
+    closeMenu();
+    await logout();
+    navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+  };
+
+  // The menu options, in order.
+  const options = [
+    { label: 'Home', screen: 'Activity' },
+    { label: 'Add Task', screen: 'Enter Task' },
+    { label: 'My Tasks', screen: 'My Tasks' },
+    { label: 'Sorted Activity', screen: 'Sorted Activity' },
+    { label: 'Status', screen: 'Status' },
+    { label: 'Subjects', screen: 'Manage Subjects' },
+  ];
+
   return (
     <View>
-      {/* holds the menu button and modal */}
 
       <TouchableOpacity
         style={styles.menuButton}
-        onPress={() => setMenuOpen(true)} // opens the menu when user clicked
+        onPress={() => setMenuOpen(true)}
       >
         <Text style={styles.menuText}>☰</Text>
       </TouchableOpacity>
@@ -41,42 +73,28 @@ export default function MenuBar({ navigation }) { // create the menu bar
         <TouchableOpacity
           style={styles.overlay}
           activeOpacity={1}
-          onPress={closeMenu} // closes the menu when the outside area is pressed
+          onPress={closeMenu}
         >
 
-          <View style={styles.menuBox}>
-            {/* holds the menu options */}
+          <View style={styles.menuBox} onStartShouldSetResponder={() => true}>
 
             <Text style={styles.menuTitle}>MENU</Text>
 
-            <TouchableOpacity
-              style={styles.menuOption}
-              onPress={() => {
-                closeMenu();
-                navigation.navigate('My Tasks'); // go to my task screen
-              }}
-            >
-              <Text style={styles.menuOptionText}>My Tasks</Text>
-            </TouchableOpacity>
+            {options.map((option) => (
+              <TouchableOpacity
+                key={option.label}
+                style={styles.menuOption}
+                onPress={() => goTo(option.screen)}
+              >
+                <Text style={styles.menuOptionText}>{option.label}</Text>
+              </TouchableOpacity>
+            ))}
 
             <TouchableOpacity
-              style={styles.menuOption}
-              onPress={() => {
-                closeMenu();
-                navigation.navigate('Sorted Activity'); // go to Sorted Activity
-              }}
+              style={[styles.menuOption, styles.logoutOption]}
+              onPress={handleLogout}
             >
-              <Text style={styles.menuOptionText}>Sorted Activity</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.menuOption, styles.lastOption]}
-              onPress={() => {
-                closeMenu();
-                navigation.navigate('Status'); // go to status screen
-              }}
-            >
-              <Text style={styles.menuOptionText}>Status</Text>
+              <Text style={[styles.menuOptionText, { color: colors.danger }]}>Log Out</Text>
             </TouchableOpacity>
 
           </View>
@@ -112,7 +130,7 @@ const makeStyles = (colors) =>
     },
 
     menuBox: {
-      width: 210,
+      width: 220,
       backgroundColor: colors.surface,
       borderRadius: 16,
       padding: 12,
@@ -138,13 +156,14 @@ const makeStyles = (colors) =>
       borderWidth: 1,
       borderColor: colors.border,
       borderRadius: 10,
-      paddingVertical: 13,
+      paddingVertical: 12,
       paddingHorizontal: 15,
       marginBottom: 8,
     },
 
-    lastOption: {
+    logoutOption: {
       marginBottom: 0,
+      marginTop: 4,
     },
 
     menuOptionText: {
