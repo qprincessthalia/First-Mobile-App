@@ -4,6 +4,7 @@ import {
   View, // hold entire page
   Text, // display text
   TouchableOpacity, // makes buttons clickable
+  ScrollView, // lets the menu scroll on small phones
   StyleSheet, // allows to customize design
   Modal, // allow a screen to appear to another screen
 } from 'react-native';
@@ -46,10 +47,9 @@ export default function MenuBar({ navigation }) { // create the menu bar
   // The menu options, in order.
   const options = [
     { label: 'Home', screen: 'Activity' },
-    { label: 'Add Task', screen: 'Enter Task' },
-    { label: 'My Tasks', screen: 'My Tasks' },
-    { label: 'Sorted Activity', screen: 'Sorted Activity' },
-    { label: 'Status', screen: 'Status' },
+    { label: 'Pending', screen: 'Pending Tasks' },
+    { label: 'Completed', screen: 'Completed Tasks' },
+    { label: 'Favorites', screen: 'Favorites' },
     { label: 'Subjects', screen: 'Manage Subjects' },
   ];
 
@@ -80,22 +80,24 @@ export default function MenuBar({ navigation }) { // create the menu bar
 
             <Text style={styles.menuTitle}>MENU</Text>
 
-            {options.map((option) => (
-              <TouchableOpacity
-                key={option.label}
-                style={styles.menuOption}
-                onPress={() => goTo(option.screen)}
-              >
-                <Text style={styles.menuOptionText}>{option.label}</Text>
-              </TouchableOpacity>
-            ))}
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {options.map((option) => (
+                <TouchableOpacity
+                  key={option.label}
+                  style={styles.menuOption}
+                  onPress={() => goTo(option.screen)}
+                >
+                  <Text style={styles.menuOptionText}>{option.label}</Text>
+                </TouchableOpacity>
+              ))}
 
-            <TouchableOpacity
-              style={[styles.menuOption, styles.logoutOption]}
-              onPress={handleLogout}
-            >
-              <Text style={[styles.menuOptionText, { color: colors.danger }]}>Log Out</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.menuOption, styles.logoutOption]}
+                onPress={handleLogout}
+              >
+                <Text style={[styles.menuOptionText, { color: colors.danger }]}>Log Out</Text>
+              </TouchableOpacity>
+            </ScrollView>
 
           </View>
 
@@ -127,10 +129,12 @@ const makeStyles = (colors) =>
       alignItems: 'flex-end',
       paddingTop: 65,
       paddingRight: 15,
+      paddingBottom: 20,
     },
 
     menuBox: {
       width: 220,
+      maxHeight: '100%',
       backgroundColor: colors.surface,
       borderRadius: 16,
       padding: 12,

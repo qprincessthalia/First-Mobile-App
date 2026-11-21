@@ -141,7 +141,7 @@ export default function EnterTask({ navigation, route }) { // creates the Enter 
           />
 
           <View style={styles.subjectExtra}>
-            {showAddBox ? (
+            {showAddBox && (
               <View style={styles.addRow}>
                 <TextInput
                   style={styles.addInput}
@@ -159,20 +159,29 @@ export default function EnterTask({ navigation, route }) { // creates the Enter 
                   <Text style={styles.addButtonText}>ADD</Text>
                 </TouchableOpacity>
               </View>
-            ) : (
-              <TouchableOpacity onPress={() => setAddingSubject(true)}>
-                <Text style={styles.link}>+ Add a new subject</Text>
-              </TouchableOpacity>
             )}
 
-            {subjects.length > 0 && (
-              <TouchableOpacity
-                style={styles.manageLink}
-                onPress={() => navigation.navigate('Manage Subjects')}
-              >
-                <Text style={styles.link}>Manage subjects (rename or remove)</Text>
-              </TouchableOpacity>
-            )}
+            <View style={[styles.pillRow, showAddBox && styles.pillRowSpaced]}>
+              {!showAddBox && (
+                <TouchableOpacity
+                  style={styles.pillButton}
+                  activeOpacity={0.85}
+                  onPress={() => setAddingSubject(true)}
+                >
+                  <Text style={styles.pillText}>+ Add subject</Text>
+                </TouchableOpacity>
+              )}
+
+              {subjects.length > 0 && (
+                <TouchableOpacity
+                  style={styles.pillButton}
+                  activeOpacity={0.85}
+                  onPress={() => navigation.navigate('Manage Subjects')}
+                >
+                  <Text style={styles.pillText}>Manage</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
 
           <SelectField
@@ -266,14 +275,28 @@ const makeStyles = (colors) =>
       marginBottom: 20,
     },
 
-    link: {
-      fontFamily: fonts.medium,
-      fontSize: 14,
-      color: colors.primary,
+    pillRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
     },
 
-    manageLink: {
+    pillRowSpaced: {
       marginTop: 10,
+    },
+
+    pillButton: {
+      borderWidth: 1.5,
+      borderColor: colors.primary,
+      borderRadius: 20,
+      paddingVertical: 8,
+      paddingHorizontal: 14,
+      marginRight: 10,
+    },
+
+    pillText: {
+      fontFamily: fonts.semiBold,
+      fontSize: 13,
+      color: colors.primary,
     },
 
     addRow: {

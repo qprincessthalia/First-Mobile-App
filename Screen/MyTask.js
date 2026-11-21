@@ -14,6 +14,7 @@ import ScreenContainer from '../components/ScreenContainer';
 import ScreenTitle from '../components/ScreenTitle';
 import AppButton from '../components/AppButton';
 import StatusBadge from '../components/StatusBadge';
+import HeartButton from '../components/HeartButton';
 
 // One line inside a task card: muted label + value.
 function Info({ label, value }) {
@@ -44,6 +45,11 @@ export default function MyTask({ navigation }) { // create the my task screen
     updateTask(task.id, { status: task.status === 'Completed' ? 'Pending' : 'Completed' });
   };
 
+  // Adds a task to favorites, or removes it.
+  const toggleFavorite = (task) => {
+    updateTask(task.id, { favorite: !task.favorite });
+  };
+
   // Asks before deleting a task.
   const confirmDelete = (task) => {
     Alert.alert('Delete task', `Delete "${task.title}"?`, [
@@ -70,6 +76,7 @@ export default function MyTask({ navigation }) { // create the my task screen
           <View key={task.id} style={styles.taskBox}>
             <View style={styles.cardHeader}>
               <Text style={styles.taskTitle}>{task.title}</Text>
+              <HeartButton active={!!task.favorite} onPress={() => toggleFavorite(task)} />
               <StatusBadge task={task} />
             </View>
 

@@ -12,19 +12,34 @@ import { formatDate } from '../utils/dates';
 import ScreenContainer from '../components/ScreenContainer';
 import ScreenTitle from '../components/ScreenTitle';
 import StatusBadge from '../components/StatusBadge';
+import HeartButton from '../components/HeartButton';
 
 // Orders tasks by deadline, nearest first.
 const byDeadline = (a, b) => new Date(a.deadline) - new Date(b.deadline);
 
-export default function SortedActivity() { // create sorted activity screen
+export default function SortedActivity({ route }) { // create sorted activity screen
   const { colors } = useTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);
-  const { tasks } = useTasks();
+  const { tasks, updateTask } = useTasks();
 
-  const [sortBy, setSortBy] = useState('deadline'); // stores the selected sorting option
+  // The menu's Favorites item opens this same screen under the name "Favorites".
+  const startsOnFavorites = route?.name === 'Favorites';
+
+  const [sortBy, setSortBy] = useState(startsOnFavorites ? 'favorites' : 'deadline'); // 'deadline', 'subject' or 'favorites'
+
+  // Adds a task to favorites, or removes it.
+  const toggleFavorite = (task) => {
+    updateTask(task.id, { favorite: !task.favorite });
+  };
 
   // All tasks ordered by deadline.
   const deadlineList = useMemo(() => [...tasks].sort(byDeadline), [tasks]);
+
+  // Only the favorite tasks, ordered by deadline.
+  const favoriteList = useMemo(
+    () => tasks.filter((task) => task.favorite).sort(byDeadline),
+    [tasks]
+  );
 
   // Tasks grouped by subject (subjects in A-Z order).
   const subjectGroups = useMemo(() => {
@@ -44,7 +59,7 @@ export default function SortedActivity() { // create sorted activity screen
   return (
     <ScreenContainer>
       <View style={styles.taskBox}>
-        <ScreenTitle title="SORTED ACTIVITIES" />
+        <ScreenTitle title={startsOnFavorites ? 'FAVORITES' : 'SORTED ACTIVITIES'} />
 
         <View style={styles.buttonRow}>
           <TouchableOpacity
@@ -53,7 +68,7 @@ export default function SortedActivity() { // create sorted activity screen
             onPress={() => setSortBy('subject')}
           >
             <Text style={[styles.buttonText, sortBy === 'subject' && styles.activeButtonText]}>
-              Sort by Subject
+              By Subject
             </Text>
           </TouchableOpacity>
 
@@ -63,13 +78,29 @@ export default function SortedActivity() { // create sorted activity screen
             onPress={() => setSortBy('deadline')}
           >
             <Text style={[styles.buttonText, sortBy === 'deadline' && styles.activeButtonText]}>
-              Sort by Deadline
+              By Deadline
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, sortBy === 'favorites' && styles.activeButton]}
+            activeOpacity={0.85}
+            onPress={() => setSortBy('favorites')}
+          >
+            <Text style={[styles.buttonText, sortBy === 'favorites' && styles.activeButtonText]}>
+              ♥ Favorites
             </Text>
           </TouchableOpacity>
         </View>
 
         {tasks.length === 0 && (
           <Text style={styles.emptyText}>No tasks to sort yet. Add a task first.</Text>
+        )}
+
+        {sortBy === 'favorites' && tasks.length > 0 && favoriteList.length === 0 && (
+          <Text style={styles.emptyText}>
+            No favorites yet. Tap the heart on a task in My Tasks to add it here.
+          </Text>
         )}
 
         {sortBy === 'subject' &&
@@ -81,6 +112,7 @@ export default function SortedActivity() { // create sorted activity screen
                 <View key={task.id} style={styles.activityBox}>
                   <View style={styles.rowHeader}>
                     <Text style={styles.taskTitle}>{task.title}</Text>
+                    <HeartButton active={!!task.favorite} onPress={() => toggleFavorite(task)} />
                     <StatusBadge task={task} />
                   </View>
                   <Text style={styles.text}>Activity Type: {task.type}</Text>
@@ -95,6 +127,20 @@ export default function SortedActivity() { // create sorted activity screen
             <View key={task.id} style={styles.deadlineBox}>
               <View style={styles.rowHeader}>
                 <Text style={styles.taskTitle}>{task.title}</Text>
+                <HeartButton active={!!task.favorite} onPress={() => toggleFavorite(task)} />
+                <StatusBadge task={task} />
+              </View>
+              <Text style={styles.deadline}>Deadline: {formatDate(task.deadline)}</Text>
+              <Text style={styles.subject}>Subject: {task.subject}</Text>
+            </View>
+          ))}
+
+        {sortBy === 'favorites' &&
+          favoriteList.map((task) => (
+            <View key={task.id} style={styles.deadlineBox}>
+              <View style={styles.rowHeader}>
+                <Text style={styles.taskTitle}>{task.title}</Text>
+                <HeartButton active={!!task.favorite} onPress={() => toggleFavorite(task)} />
                 <StatusBadge task={task} />
               </View>
               <Text style={styles.deadline}>Deadline: {formatDate(task.deadline)}</Text>
@@ -120,18 +166,18 @@ const makeStyles = (colors) =>
 
     buttonRow: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
       marginBottom: 20,
     },
 
     button: {
-      width: '48%',
+      flex: 1,
       backgroundColor: 'transparent',
       borderWidth: 1.5,
       borderColor: colors.border,
       paddingVertical: 12,
       borderRadius: 10,
       alignItems: 'center',
+      marginHorizontal: 3,
     },
 
     activeButton: {
@@ -142,7 +188,7 @@ const makeStyles = (colors) =>
     buttonText: {
       fontFamily: fonts.semiBold,
       color: colors.muted,
-      fontSize: 13,
+      fontSize: 12,
     },
 
     activeButtonText: {
@@ -194,7 +240,7 @@ const makeStyles = (colors) =>
       fontFamily: fonts.semiBold,
       fontSize: 16,
       color: colors.text,
-      marginRight: 10,
+      marginRight: 6,
     },
 
     text: {

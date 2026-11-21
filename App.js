@@ -1,4 +1,3 @@
-
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
@@ -28,6 +27,7 @@ import MenuBar from './Screen/MenuBar';
 import StatusUpdate from './Screen/StatusUpdate';
 import Status from './Screen/Status';
 import ManageSubjects from './Screen/ManageSubjects';
+import TaskList from './Screen/TaskList';
 
 const Stack = createNativeStackNavigator();
 
@@ -103,7 +103,13 @@ function AppNavigator() {
 
         <Stack.Screen name="My Tasks" component={MyTask} />
 
+        <Stack.Screen name="Pending Tasks" component={TaskList} />
+
+        <Stack.Screen name="Completed Tasks" component={TaskList} />
+
         <Stack.Screen name="Sorted Activity" component={SortedActivity} />
+
+        <Stack.Screen name="Favorites" component={SortedActivity} />
 
         <Stack.Screen name="Status Update" component={StatusUpdate} />
 
